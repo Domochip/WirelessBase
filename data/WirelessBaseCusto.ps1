@@ -23,7 +23,6 @@ $templatesWithCustoFiles=@{
 '@
         ;
         HTMLScriptInReady=@'
-        <!-- TODO -->
 '@
     }
     ;
@@ -34,16 +33,12 @@ $templatesWithCustoFiles=@{
         ShortApplicationName=$shortApplicationName
         ;
         HTMLContent=@'
-        <div>
-        TODO
-        </div>
 '@
         ;
         HTMLScript=@'
-        <!-- TODO -->
 '@
         ;
-        HTMLFillinConfigForm=@'
+        HTMLScriptInReady=@'
 '@
     }
     ;

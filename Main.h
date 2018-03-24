@@ -1,6 +1,8 @@
 #ifndef Main_h
 #define Main_h
 
+#include <arduino.h>
+
 #include "data\status.html.gz.h"
 #include "data\config.html.gz.h"
 #include "data\fw.html.gz.h"
@@ -16,18 +18,16 @@
 //include Application header file
 #include "WirelessBase.h"
 
-#define APPLICATION_NAME "DomoChip Wireless Base"
-//#define APPLICATION_CLASS MyClass
-//#define APPLICATION_VAR myClass
+#define APPLICATION1_NAME "WBase"
+#define APPLICATION1_DESC "DomoChip Wireless Base"
+#define APPLICATION1_CLASS MyApplication
 
 #define VERSION_NUMBER "3.X"
-
-#define MODEL "WBase"
 
 #define DEFAULT_AP_SSID "WirelessBase"
 #define DEFAULT_AP_PSK "PasswordBase"
 
-//Enable developper mode (fwdev webpage and SPIFFS is used)
+//Enable developper mode (SPIFFS editor)
 #define DEVELOPPER_MODE 0
 
 //Choose Serial Speed

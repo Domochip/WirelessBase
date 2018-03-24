@@ -7,38 +7,31 @@
 
 #include "Main.h"
 #include "src\Utils.h"
-
+#include "src\Base.h"
 
 const char appDataPredefPassword[] PROGMEM = "ewcXoCt4HHjZUvY1";
 
-//Structure of Application Data 1
-class AppData1 {
+//TODO : Rename MyApplication
+class MyApplication : public Application
+{
+private:
+  //TODO : Declare configuration properies
 
-  public:
-    //TODO : declare required properties
+  //TODO : Declare run/status properties
 
-    void SetDefaultValues() {
-      //TODO : init properties
-    }
+  //TODO : Declare required private methods
 
-    String GetJSON();
-    bool SetFromParameters(AsyncWebServerRequest* request, AppData1 &tempAppData);
-};
+  void SetConfigDefaultValues();
+  void ParseConfigJSON(JsonObject &root);
+  bool ParseConfigWebRequest(AsyncWebServerRequest *request);
+  String GenerateConfigJSON(bool forSaveFile);
+  String GenerateStatusJSON();
+  bool AppInit(bool reInit);
+  void AppInitWebServer(AsyncWebServer &server, bool &shouldReboot, bool &pauseApplication);
+  void AppRun();
 
-//TODO : Rename MyClass
-class MyClass {
-
-  private:
-    AppData1* _appData1;
-
-    //TODO : Declare private properies and method
-
-    String GetStatus();
-
-  public:
-    void Init(AppData1 &appData1);
-    void InitWebServer(AsyncWebServer &server);
-    void Run();
+public:
+  MyApplication(char appId, String fileName);
 };
 
 #endif
