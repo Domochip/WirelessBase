@@ -10,8 +10,8 @@
 
 void CoreApplication::SetConfigDefaultValues(){};
 void CoreApplication::ParseConfigJSON(JsonObject &root){};
-bool CoreApplication::ParseConfigWebRequest(AsyncWebServerRequest *request){};
-String CoreApplication::GenerateConfigJSON(bool clearPassword = false){};
+bool CoreApplication::ParseConfigWebRequest(AsyncWebServerRequest *request) { return true; };
+String CoreApplication::GenerateConfigJSON(bool clearPassword = false) { return String(); };
 String CoreApplication::GenerateStatusJSON()
 {
   String gs('{');
