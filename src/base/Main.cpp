@@ -48,7 +48,14 @@ void setup()
   Serial.print(F(APPLICATION1_DESC " "));
   Serial.println(BASE_VERSION "/" VERSION);
   Serial.println(F("---Booting---"));
-  Serial.println(F("Wait Rescue button for 5 seconds"));
+
+#ifndef RESCUE_BUTTON_WAIT
+#define RESCUE_BUTTON_WAIT 3
+#endif
+
+  Serial.print(F("Wait Rescue button for "));
+  Serial.print(RESCUE_BUTTON_WAIT);
+  Serial.println(F(" seconds"));
 
   bool skipExistingConfig = false;
   pinMode(RESCUE_BTN_PIN, (RESCUE_BTN_PIN != 16) ? INPUT_PULLUP : INPUT);
@@ -56,7 +63,7 @@ void setup()
   {
     if (digitalRead(RESCUE_BTN_PIN) == LOW)
       skipExistingConfig = true;
-    delay(50);
+    delay(RESCUE_BUTTON_WAIT * 10);
   }
 
   if (skipExistingConfig)

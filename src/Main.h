@@ -36,6 +36,9 @@
 //Choose Pin used to boot in Rescue Mode
 #define RESCUE_BTN_PIN 2
 
+//Define time to wait for Rescue press (in s)
+//#define RESCUE_BUTTON_WAIT 3
+
 //Status LED
 //#define STATUS_LED_SETUP pinMode(XX, OUTPUT);pinMode(XX, OUTPUT);
 //#define STATUS_LED_OFF digitalWrite(XX, HIGH);digitalWrite(XX, HIGH);
