@@ -1,4 +1,5 @@
 #include <ESP8266WiFi.h>
+#include <EEPROM.h>
 #include <FS.h>
 #include <ESPAsyncTCP.h>
 #include <ESPAsyncWebServer.h>
@@ -53,17 +54,29 @@ void setup()
 #define RESCUE_BUTTON_WAIT 3
 #endif
 
-  Serial.print(F("Wait Rescue button for "));
-  Serial.print(RESCUE_BUTTON_WAIT);
-  Serial.println(F(" seconds"));
-
   bool skipExistingConfig = false;
-  pinMode(RESCUE_BTN_PIN, (RESCUE_BTN_PIN != 16) ? INPUT_PULLUP : INPUT);
-  for (int i = 0; i < 100 && skipExistingConfig == false; i++)
+
+  //look into EEPROM for Rescue mode flag
+  EEPROM.begin(4);
+  skipExistingConfig = EEPROM.read(0) != 0;
+  if (skipExistingConfig)
+    EEPROM.write(0, 0);
+  EEPROM.end();
+
+  //if config already skipped, don't wait for rescue button
+  if (!skipExistingConfig)
   {
-    if (digitalRead(RESCUE_BTN_PIN) == LOW)
-      skipExistingConfig = true;
-    delay(RESCUE_BUTTON_WAIT * 10);
+    Serial.print(F("Wait Rescue button for "));
+    Serial.print(RESCUE_BUTTON_WAIT);
+    Serial.println(F(" seconds"));
+
+    pinMode(RESCUE_BTN_PIN, (RESCUE_BTN_PIN != 16) ? INPUT_PULLUP : INPUT);
+    for (int i = 0; i < 100 && skipExistingConfig == false; i++)
+    {
+      if (digitalRead(RESCUE_BTN_PIN) == LOW)
+        skipExistingConfig = true;
+      delay(RESCUE_BUTTON_WAIT * 10);
+    }
   }
 
   if (skipExistingConfig)
