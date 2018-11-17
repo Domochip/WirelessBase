@@ -9,12 +9,10 @@
 #include "base\Utils.h"
 #include "base\Base.h"
 
+const char appDataPredefPassword[] PROGMEM = "ewcXoCt4HHjZUvY1";
+
 #include "data\status1.html.gz.h"
 #include "data\config1.html.gz.h"
-#include "data\fw1.html.gz.h"
-#include "data\discover1.html.gz.h"
-
-const char appDataPredefPassword[] PROGMEM = "ewcXoCt4HHjZUvY1";
 
 //TODO : Rename MyApplication
 class MyApplication : public Application
