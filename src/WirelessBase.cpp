@@ -50,7 +50,7 @@ String MyApplication::GenerateStatusJSON()
 
     //TODO
     // gs = gs + F("\"p1\":") + (property1 ? true : false);
-    // gs = gs + F("\"p2\":\"") + property2 + '"';
+    // gs = gs + F(",\"p2\":\"") + property2 + '"';
 
     gs += '}';
 

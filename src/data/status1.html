@@ -2,17 +2,17 @@
 <div id="shortApplicationName" style="display: none;">WBase</div>
 
 <h2 class="content-subhead">WirelessBase<span id="l3"><h6 style="display:inline"><b> Loading...</b></h6></span></h2>
-        <span id="todo"></span>
+<span id="todo"></span>
 
-        <script>
-                $.getJSON("/gs1", function(GS1){
-            $.each(GS1,function(k,v){
-                //todo
-            })
-
-            $("#l3").fadeOut();
+<script>
+    $.getJSON("/gs1", function(GS1){
+        $.each(GS1,function(k,v){
+            $('#'+k).html(v);
         })
-        .fail(function(){
-            $("#l3").html('<h4 style="display:inline;color:red;"><b> Failed</b></h4>');
-        });
-        </script>
+
+        $("#l3").fadeOut();
+    })
+    .fail(function(){
+        $("#l3").html('<h4 style="display:inline;color:red;"><b> Failed</b></h4>');
+    });
+</script>
