@@ -9,10 +9,10 @@ void MyApplication::SetConfigDefaultValues(){
 };
 //------------------------------------------
 //Parse JSON object into configuration properties
-void MyApplication::ParseConfigJSON(JsonObject &root){
+void MyApplication::ParseConfigJSON(DynamicJsonDocument &doc){
     //TODO
-    //if (root["prop1"].success()) property1 = root[F("prop1")];
-    //if (root["prop2"].success()) strlcpy(property2, root["prop2"], sizeof(property2));
+    //if (!doc["prop1"].isNull()) property1 = doc[F("prop1")];
+    //if (!doc["prop2"].isNull()) strlcpy(property2, doc["prop2"], sizeof(property2));
 };
 //------------------------------------------
 //Parse HTTP POST parameters in request into configuration properties
