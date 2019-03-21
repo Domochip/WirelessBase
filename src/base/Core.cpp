@@ -8,7 +8,6 @@
 #include "data\pure-min.css.gz.h"
 #include "data\side-menu.css.gz.h"
 #include "data\side-menu.js.gz.h"
-#include "data\jquery-3.3.1.min.js.gz.h"
 
 void CoreApplication::SetConfigDefaultValues(){};
 void CoreApplication::ParseConfigJSON(DynamicJsonDocument &doc){};
@@ -213,13 +212,6 @@ void CoreApplication::AppInitWebServer(AsyncWebServer &server, bool &shouldReboo
 
   server.on("/side-menu.js", HTTP_GET, [](AsyncWebServerRequest *request) {
     AsyncWebServerResponse *response = request->beginResponse_P(200, F("text/javascript"), (const uint8_t *)sidemenujsgz, sizeof(sidemenujsgz));
-    response->addHeader("Content-Encoding", "gzip");
-    response->addHeader("Cache-Control", "max-age=604800, public");
-    request->send(response);
-  });
-
-  server.on("/jquery-3.3.1.min.js", HTTP_GET, [](AsyncWebServerRequest *request) {
-    AsyncWebServerResponse *response = request->beginResponse_P(200, F("text/javascript"), (const uint8_t *)jquery331minjsgz, sizeof(jquery331minjsgz));
     response->addHeader("Content-Encoding", "gzip");
     response->addHeader("Cache-Control", "max-age=604800, public");
     request->send(response);
