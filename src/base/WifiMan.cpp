@@ -251,6 +251,12 @@ bool WifiMan::AppInit(bool reInit = false)
     _apSsid[endOfSsid + 4] = 0;
   }
 
+  //make changes saved to flash
+  WiFi.persistent(true);
+
+  //Enable AP at start
+  EnableAP(true);
+
   //Stop RefreshWiFi and disconnect before WiFi operations -----
   _refreshTicker.detach();
   WiFi.disconnect();
@@ -292,14 +298,8 @@ bool WifiMan::AppInit(bool reInit = false)
     });
   }
 
-  //make next changes saved to flash
-  WiFi.persistent(true);
-
   //Set hostname
   WiFi.hostname(hostname);
-
-  //Enable AP at start
-  EnableAP(true);
 
   //Call RefreshWiFi to initiate configuration
   RefreshWiFi();
