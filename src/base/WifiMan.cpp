@@ -289,8 +289,8 @@ bool WifiMan::AppInit(bool reInit = false)
         //stop reconnection
         WiFi.disconnect();
         Serial.println(F("Wifi disconnected"));
-        //call refreshTicker shortly
-        _refreshTicker.once_ms_scheduled(100, [this]() { this->_needRefreshWifi = true; });
+        //call RefreshWifi shortly
+        _needRefreshWifi = true;
       }
 #ifdef STATUS_LED_WARNING
       STATUS_LED_WARNING
