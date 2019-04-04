@@ -45,7 +45,7 @@ void WifiMan::RefreshWiFi()
       {
         WiFi.disconnect();
         Serial.print(F("AP not found "));
-        _refreshTicker.once_scheduled(_refreshPeriod, [this]() { this->_needRefreshWifi = true; });
+        _refreshTicker.once(_refreshPeriod, [this]() { _needRefreshWifi = true; });
       }
     }
   }
@@ -384,8 +384,7 @@ void WifiMan::AppRun()
 {
   if (_needRefreshWifi)
   {
-    RefreshWiFi();
-    //refresh done
     _needRefreshWifi = false;
+    RefreshWiFi();
   }
 };
