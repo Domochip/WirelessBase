@@ -5,10 +5,21 @@
 #include <ESPAsyncWebServer.h>
 
 #include "Version.h"
+#include "..\Main.h"
 #include "Application.h"
 #include "Core.h"
 #include "WifiMan.h"
-#include "..\Main.h"
+
+//include Application header files
+#ifdef APPLICATION1_HEADER
+#include APPLICATION1_HEADER
+#endif
+#ifdef APPLICATION2_HEADER
+#include APPLICATION2_HEADER
+#endif
+#ifdef APPLICATION3_HEADER
+#include APPLICATION3_HEADER
+#endif
 
 //System
 Core core('0', "Core");

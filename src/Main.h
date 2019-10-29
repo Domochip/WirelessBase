@@ -4,15 +4,10 @@
 #include <arduino.h>
 
 //DomoChip Informations
-//------------Compile for 1M 64K SPIFFS------------
 //Configuration Web Pages :
 //http://IP/
-//http://IP/config
-//http://IP/fw
 
-//include Application header file
-#include "WirelessBase.h"
-
+#define APPLICATION1_HEADER "WirelessBase.h"
 #define APPLICATION1_NAME "WBase"
 #define APPLICATION1_DESC "DomoChip Wireless Base"
 #define APPLICATION1_CLASS MyApplication
