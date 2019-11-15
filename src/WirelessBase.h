@@ -1,12 +1,9 @@
 #ifndef WirelessBase_h
 #define WirelessBase_h
 
-#include <ESP8266WiFi.h>
-#include <ESPAsyncTCP.h>
-#include <ESPAsyncWebServer.h>
-
 #include "Main.h"
 #include "base\Utils.h"
+#include "base\MQTTMan.h"
 #include "base\Application.h"
 
 const char appDataPredefPassword[] PROGMEM = "ewcXoCt4HHjZUvY1";
