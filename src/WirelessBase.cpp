@@ -2,21 +2,21 @@
 
 //------------------------------------------
 //Used to initialize configuration properties to default values
-void MyApplication::SetConfigDefaultValues(){
+void MyApplication::setConfigDefaultValues(){
     //TODO
     //property1 = 0;
     //property2 = F("test");
 };
 //------------------------------------------
 //Parse JSON object into configuration properties
-void MyApplication::ParseConfigJSON(DynamicJsonDocument &doc){
+void MyApplication::parseConfigJSON(DynamicJsonDocument &doc){
     //TODO
     //if (!doc["prop1"].isNull()) property1 = doc[F("prop1")];
     //if (!doc["prop2"].isNull()) strlcpy(property2, doc["prop2"], sizeof(property2));
 };
 //------------------------------------------
 //Parse HTTP POST parameters in request into configuration properties
-bool MyApplication::ParseConfigWebRequest(AsyncWebServerRequest *request)
+bool MyApplication::parseConfigWebRequest(AsyncWebServerRequest *request)
 {
     //TODO
     // if (!request->hasParam(F("prop1"), true))
@@ -31,7 +31,7 @@ bool MyApplication::ParseConfigWebRequest(AsyncWebServerRequest *request)
 };
 //------------------------------------------
 //Generate JSON from configuration properties
-String MyApplication::GenerateConfigJSON(bool forSaveFile = false)
+String MyApplication::generateConfigJSON(bool forSaveFile = false)
 {
     String gc('{');
     //TODO
@@ -44,7 +44,7 @@ String MyApplication::GenerateConfigJSON(bool forSaveFile = false)
 };
 //------------------------------------------
 //Generate JSON of application status
-String MyApplication::GenerateStatusJSON()
+String MyApplication::generateStatusJSON()
 {
     String gs('{');
 
@@ -58,7 +58,7 @@ String MyApplication::GenerateStatusJSON()
 };
 //------------------------------------------
 //code to execute during initialization and reinitialization of the app
-bool MyApplication::AppInit(bool reInit)
+bool MyApplication::appInit(bool reInit)
 {
     //TODO
     //if (toto.enabled) _sendTimer.setInterval(SEND_PERIOD, [this]() {this->SendTimerTick();});
@@ -67,7 +67,7 @@ bool MyApplication::AppInit(bool reInit)
 };
 //------------------------------------------
 //Return HTML Code to insert into Status Web page
-const uint8_t* MyApplication::GetHTMLContent(WebPageForPlaceHolder wp){
+const uint8_t* MyApplication::getHTMLContent(WebPageForPlaceHolder wp){
       switch(wp){
     case status:
       return (const uint8_t*) status1htmlgz;
@@ -82,7 +82,7 @@ const uint8_t* MyApplication::GetHTMLContent(WebPageForPlaceHolder wp){
   return nullptr;
 };
 //and his Size
-size_t MyApplication::GetHTMLContentSize(WebPageForPlaceHolder wp){
+size_t MyApplication::getHTMLContentSize(WebPageForPlaceHolder wp){
   switch(wp){
     case status:
       return sizeof(status1htmlgz);
@@ -99,14 +99,14 @@ size_t MyApplication::GetHTMLContentSize(WebPageForPlaceHolder wp){
 
 //------------------------------------------
 //code to register web request answer to the web server
-void MyApplication::AppInitWebServer(AsyncWebServer &server, bool &shouldReboot, bool &pauseApplication){
+void MyApplication::appInitWebServer(AsyncWebServer &server, bool &shouldReboot, bool &pauseApplication){
     //TODO
     //server.on("/getColor", HTTP_GET, [this](AsyncWebServerRequest * request) {request->send(200, F("text/html"), GetColor());});
 };
 
 //------------------------------------------
 //Run for timer
-void MyApplication::AppRun()
+void MyApplication::appRun()
 {
     //TODO : implement run tasks (receive from serial, run timer, etc.)
 }
