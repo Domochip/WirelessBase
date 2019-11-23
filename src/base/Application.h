@@ -26,7 +26,7 @@ protected:
   bool _reInit = false;
 
 #if ENABLE_STATUS_EVENTSOURCE
-  AsyncEventSource m_statusEventSource; //initialized during Constructor
+  AsyncEventSource _statusEventSource; //initialized during Constructor
 #endif
 
   //already built methods
@@ -48,7 +48,7 @@ protected:
 public:
   //already built methods
 #if ENABLE_STATUS_EVENTSOURCE
-  Application(char appId, String appName) : m_statusEventSource(String(F("/statusEvt")) + appId)
+  Application(char appId, String appName) : _statusEventSource(String(F("/statusEvt")) + appId)
 #else
   Application(char appId, String appName)
 #endif

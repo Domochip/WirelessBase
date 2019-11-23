@@ -165,7 +165,7 @@ void Application::InitWebServer(AsyncWebServer &server, bool &shouldReboot, bool
 
 #if ENABLE_STATUS_EVENTSOURCE
   //register status EventSource
-  server.addHandler(&m_statusEventSource);
+  server.addHandler(&_statusEventSource);
 #endif
 
   //Execute Specific Application Web Server initialization
