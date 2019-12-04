@@ -2,6 +2,9 @@
 #define Application_h
 
 #include "..\Main.h"
+#ifdef ESP32
+#include <SPIFFS.h>
+#endif
 #include <ESPAsyncWebServer.h>
 #include <ArduinoJson.h>
 
