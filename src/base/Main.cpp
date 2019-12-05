@@ -1,7 +1,10 @@
+#ifdef ESP8266
 #include <ESP8266WiFi.h>
+#else
+#include <WiFi.h>
+#endif
 #include <EEPROM.h>
 #include <FS.h>
-#include <ESPAsyncTCP.h>
 #include <ESPAsyncWebServer.h>
 
 #include "Version.h"
