@@ -4,6 +4,7 @@
 #include <WiFi.h>
 #endif
 #include <EEPROM.h>
+#include <LittleFS.h>
 #include <FS.h>
 #include <ESPAsyncWebServer.h>
 
@@ -114,7 +115,7 @@ void setup()
     LOG_SERIAL.println(F("-> RESCUE MODE : Stored configuration won't be loaded."));
 #endif
   }
-  if (!SPIFFS.begin())
+  if (!LittleFS.begin())
   {
 #ifdef LOG_SERIAL
     LOG_SERIAL.println(F("/!\\   File System Mount Failed   /!\\"));

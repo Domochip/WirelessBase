@@ -1,6 +1,6 @@
 #include "Core.h"
 #include <EEPROM.h>
-#include <SPIFFSEditor.h>
+// #include <SPIFFSEditor.h>
 #include "..\Main.h" //for VERSION define
 #include "Version.h" //for BASE_VERSION define
 
@@ -256,9 +256,10 @@ void Core::appInitWebServer(AsyncWebServer &server, bool &shouldReboot, bool &pa
   });
 
   //Special Developper pages
-#if DEVELOPPER_MODE
-  server.addHandler(new SPIFFSEditor("TODO", "TODO"));
-#endif
+  // wait for LittleFSEditor
+// #if DEVELOPPER_MODE
+//   server.addHandler(new SPIFFSEditor("TODO", "TODO"));
+// #endif
 
   //404 on not found
   server.onNotFound([](AsyncWebServerRequest *request) {
