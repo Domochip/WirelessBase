@@ -45,10 +45,13 @@ def sync_tree_left_to_right(src, dst):
     # recursively sync common items
     for item in comp.common_dirs:
         sync_tree_left_to_right(os.path.join(src,item),os.path.join(dst,item))
-        
+
+print('---- Copying base files ----')
 
 sourceFolder = r'..\WirelessBase\src\base'
 destinationFolder = r'.\src\base'
 
 if not os.path.exists(r'.\src\WirelessBase.h') and os.path.exists(sourceFolder) and os.path.abspath(sourceFolder).lower() != os.path.abspath(destinationFolder).lower():
     sync_tree_left_to_right(sourceFolder, destinationFolder)
+
+print('----------------------------')
