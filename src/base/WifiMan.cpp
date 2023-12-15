@@ -112,66 +112,66 @@ void WifiMan::parseConfigJSON(DynamicJsonDocument &doc)
     dns2 = doc["dns2"];
 }
 
-bool WifiMan::parseConfigWebRequest(AsyncWebServerRequest *request)
+bool WifiMan::parseConfigWebRequest()
 {
 
-  //basic control
-  if (!request->hasParam(F("s"), true))
-  {
-    request->send(400, F("text/html"), F("SSID missing"));
-    return false;
-  }
+  // //basic control
+  // if (!request->hasParam(F("s"), true))
+  // {
+  //   request->send(400, F("text/html"), F("SSID missing"));
+  //   return false;
+  // }
 
-  char tempPassword[64 + 1] = {0};
+  // char tempPassword[64 + 1] = {0};
 
-  if (request->hasParam(F("s"), true) && request->getParam(F("s"), true)->value().length() < sizeof(ssid))
-    strcpy(ssid, request->getParam(F("s"), true)->value().c_str());
+  // if (request->hasParam(F("s"), true) && request->getParam(F("s"), true)->value().length() < sizeof(ssid))
+  //   strcpy(ssid, request->getParam(F("s"), true)->value().c_str());
 
-  if (request->hasParam(F("p"), true) && request->getParam(F("p"), true)->value().length() < sizeof(tempPassword))
-    strcpy(tempPassword, request->getParam(F("p"), true)->value().c_str());
-  if (request->hasParam(F("h"), true) && request->getParam(F("h"), true)->value().length() < sizeof(hostname))
-    strcpy(hostname, request->getParam(F("h"), true)->value().c_str());
+  // if (request->hasParam(F("p"), true) && request->getParam(F("p"), true)->value().length() < sizeof(tempPassword))
+  //   strcpy(tempPassword, request->getParam(F("p"), true)->value().c_str());
+  // if (request->hasParam(F("h"), true) && request->getParam(F("h"), true)->value().length() < sizeof(hostname))
+  //   strcpy(hostname, request->getParam(F("h"), true)->value().c_str());
 
-  IPAddress ipParser;
-  if (request->hasParam(F("ip"), true))
-  {
-    if (ipParser.fromString(request->getParam(F("ip"), true)->value()))
-      ip = static_cast<uint32_t>(ipParser);
-    else
-      ip = 0;
-  }
-  if (request->hasParam(F("gw"), true))
-  {
-    if (ipParser.fromString(request->getParam(F("gw"), true)->value()))
-      gw = static_cast<uint32_t>(ipParser);
-    else
-      gw = 0;
-  }
-  if (request->hasParam(F("mask"), true))
-  {
-    if (ipParser.fromString(request->getParam(F("mask"), true)->value()))
-      mask = static_cast<uint32_t>(ipParser);
-    else
-      mask = 0;
-  }
-  if (request->hasParam(F("dns1"), true))
-  {
-    if (ipParser.fromString(request->getParam(F("dns1"), true)->value()))
-      dns1 = static_cast<uint32_t>(ipParser);
-    else
-      dns1 = 0;
-  }
-  if (request->hasParam(F("dns2"), true))
-  {
-    if (ipParser.fromString(request->getParam(F("dns2"), true)->value()))
-      dns2 = static_cast<uint32_t>(ipParser);
-    else
-      dns2 = 0;
-  }
+  // IPAddress ipParser;
+  // if (request->hasParam(F("ip"), true))
+  // {
+  //   if (ipParser.fromString(request->getParam(F("ip"), true)->value()))
+  //     ip = static_cast<uint32_t>(ipParser);
+  //   else
+  //     ip = 0;
+  // }
+  // if (request->hasParam(F("gw"), true))
+  // {
+  //   if (ipParser.fromString(request->getParam(F("gw"), true)->value()))
+  //     gw = static_cast<uint32_t>(ipParser);
+  //   else
+  //     gw = 0;
+  // }
+  // if (request->hasParam(F("mask"), true))
+  // {
+  //   if (ipParser.fromString(request->getParam(F("mask"), true)->value()))
+  //     mask = static_cast<uint32_t>(ipParser);
+  //   else
+  //     mask = 0;
+  // }
+  // if (request->hasParam(F("dns1"), true))
+  // {
+  //   if (ipParser.fromString(request->getParam(F("dns1"), true)->value()))
+  //     dns1 = static_cast<uint32_t>(ipParser);
+  //   else
+  //     dns1 = 0;
+  // }
+  // if (request->hasParam(F("dns2"), true))
+  // {
+  //   if (ipParser.fromString(request->getParam(F("dns2"), true)->value()))
+  //     dns2 = static_cast<uint32_t>(ipParser);
+  //   else
+  //     dns2 = 0;
+  // }
 
-  //check for previous password ssid (there is a predefined special password that mean to keep already saved one)
-  if (strcmp_P(tempPassword, predefPassword))
-    strcpy(password, tempPassword);
+  // //check for previous password ssid (there is a predefined special password that mean to keep already saved one)
+  // if (strcmp_P(tempPassword, predefPassword))
+  //   strcpy(password, tempPassword);
 
   return true;
 }
@@ -347,15 +347,15 @@ bool WifiMan::appInit(bool reInit = false)
   return (ssid[0] ? WiFi.isConnected() : true);
 };
 
-const uint8_t *WifiMan::getHTMLContent(WebPageForPlaceHolder wp)
+const PROGMEM char *WifiMan::getHTMLContent(WebPageForPlaceHolder wp)
 {
   switch (wp)
   {
   case status:
-    return (const uint8_t *)statuswhtmlgz;
+    return statuswhtmlgz;
     break;
   case config:
-    return (const uint8_t *)configwhtmlgz;
+    return configwhtmlgz;
     break;
   default:
     return nullptr;
@@ -383,20 +383,18 @@ size_t WifiMan::getHTMLContentSize(WebPageForPlaceHolder wp)
 void WifiMan::appInitWebServer(ESP8266WebServer &server, bool &shouldReboot, bool &pauseApplication)
 {
 
-  server.on("/wnl", HTTP_GET, [this](AsyncWebServerRequest *request) {
+  server.on("/wnl", HTTP_GET, [this, &server]() {
     int8_t n = WiFi.scanComplete();
     if (n == -2)
     {
-      AsyncWebServerResponse *response = request->beginResponse(200, F("text/json"), F("{\"r\":-2,\"wnl\":[]}"));
-      response->addHeader("Cache-Control", "no-cache");
-      request->send(response);
+      server.sendHeader("Cache-Control", "no-cache");
+      server.send(200, F("text/json"), F("{\"r\":-2,\"wnl\":[]}"));
       WiFi.scanNetworks(true);
     }
     else if (n == -1)
     {
-      AsyncWebServerResponse *response = request->beginResponse(200, F("text/json"), F("{\"r\":-1,\"wnl\":[]}"));
-      response->addHeader("Cache-Control", "no-cache");
-      request->send(response);
+      server.sendHeader("Cache-Control", "no-cache");
+      server.send(200, F("text/json"), F("{\"r\":-1,\"wnl\":[]}"));
     }
     else
     {
@@ -409,9 +407,8 @@ void WifiMan::appInitWebServer(ESP8266WebServer &server, bool &shouldReboot, boo
           networksJSON += ',';
       }
       networksJSON += F("]}");
-      AsyncWebServerResponse *response = request->beginResponse(200, F("text/json"), networksJSON);
-      response->addHeader("Cache-Control", "no-cache");
-      request->send(response);
+      server.sendHeader("Cache-Control", "no-cache");
+      server.send(200, F("text/json"), networksJSON);
       WiFi.scanDelete();
     }
   });
