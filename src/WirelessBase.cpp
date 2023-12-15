@@ -16,7 +16,7 @@ void MyApplication::parseConfigJSON(DynamicJsonDocument &doc){
 };
 //------------------------------------------
 //Parse HTTP POST parameters in request into configuration properties
-bool MyApplication::parseConfigWebRequest()
+bool MyApplication::parseConfigWebRequest(ESP8266WebServer &server)
 {
     //TODO
     // if (!request->hasParam(F("prop1"), true))

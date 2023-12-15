@@ -141,7 +141,7 @@ void Application::initWebServer(ESP8266WebServer &server, bool &shouldReboot, bo
 
   sprintf_P(url, PSTR("/sc%c"), _appId);
   server.on(url, HTTP_POST, [this, &server]() {
-    if (!parseConfigWebRequest())
+    if (!parseConfigWebRequest(server))
       return;
 
     //then save

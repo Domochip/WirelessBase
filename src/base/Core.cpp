@@ -11,7 +11,7 @@
 
 void Core::setConfigDefaultValues(){};
 void Core::parseConfigJSON(DynamicJsonDocument &doc){};
-bool Core::parseConfigWebRequest() { return true; };
+bool Core::parseConfigWebRequest(ESP8266WebServer &server) { return true; };
 String Core::generateConfigJSON(bool clearPassword = false) { return String(); };
 String Core::generateStatusJSON()
 {

@@ -112,7 +112,7 @@ void WifiMan::parseConfigJSON(DynamicJsonDocument &doc)
     dns2 = doc["dns2"];
 }
 
-bool WifiMan::parseConfigWebRequest()
+bool WifiMan::parseConfigWebRequest(ESP8266WebServer &server)
 {
 
   // //basic control

@@ -23,7 +23,7 @@ private:
 
   void setConfigDefaultValues();
   void parseConfigJSON(DynamicJsonDocument &doc);
-  bool parseConfigWebRequest();
+  bool parseConfigWebRequest(ESP8266WebServer &server);
   String generateConfigJSON(bool forSaveFile);
   String generateStatusJSON();
   bool appInit(bool reInit);
