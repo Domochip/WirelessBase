@@ -168,6 +168,9 @@ void setup()
 void loop(void)
 {
 
+  //Handle WebServer
+  server.handleClient();
+
   if (!pauseApplication)
   {
 #ifdef APPLICATION1_CLASS
