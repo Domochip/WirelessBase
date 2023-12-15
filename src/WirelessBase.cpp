@@ -16,7 +16,7 @@ void MyApplication::parseConfigJSON(DynamicJsonDocument &doc){
 };
 //------------------------------------------
 //Parse HTTP POST parameters in request into configuration properties
-bool MyApplication::parseConfigWebRequest(AsyncWebServerRequest *request)
+bool MyApplication::parseConfigWebRequest()
 {
     //TODO
     // if (!request->hasParam(F("prop1"), true))
@@ -67,13 +67,13 @@ bool MyApplication::appInit(bool reInit)
 };
 //------------------------------------------
 //Return HTML Code to insert into Status Web page
-const uint8_t* MyApplication::getHTMLContent(WebPageForPlaceHolder wp){
+const PROGMEM char *MyApplication::getHTMLContent(WebPageForPlaceHolder wp){
       switch(wp){
     case status:
-      return (const uint8_t*) status1htmlgz;
+      return status1htmlgz;
       break;
     case config:
-      return (const uint8_t*) config1htmlgz;
+      return config1htmlgz;
       break;
     default:
       return nullptr;
