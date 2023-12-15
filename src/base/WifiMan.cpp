@@ -387,13 +387,13 @@ void WifiMan::appInitWebServer(ESP8266WebServer &server, bool &shouldReboot, boo
     int8_t n = WiFi.scanComplete();
     if (n == -2)
     {
-      server.sendHeader("Cache-Control", "no-cache");
+      server.sendHeader(F("Cache-Control"), F("no-cache"));
       server.send(200, F("text/json"), F("{\"r\":-2,\"wnl\":[]}"));
       WiFi.scanNetworks(true);
     }
     else if (n == -1)
     {
-      server.sendHeader("Cache-Control", "no-cache");
+      server.sendHeader(F("Cache-Control"), F("no-cache"));
       server.send(200, F("text/json"), F("{\"r\":-1,\"wnl\":[]}"));
     }
     else
@@ -407,7 +407,7 @@ void WifiMan::appInitWebServer(ESP8266WebServer &server, bool &shouldReboot, boo
           networksJSON += ',';
       }
       networksJSON += F("]}");
-      server.sendHeader("Cache-Control", "no-cache");
+      server.sendHeader(F("Cache-Control"), F("no-cache"));
       server.send(200, F("text/json"), networksJSON);
       WiFi.scanDelete();
     }

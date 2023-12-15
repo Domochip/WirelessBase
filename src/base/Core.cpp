@@ -81,8 +81,8 @@ void Core::appInitWebServer(ESP8266WebServer &server, bool &shouldReboot, bool &
 {
   //root is index
   server.on("/", HTTP_GET, [&server]() {
-    server.sendHeader("Content-Encoding", "gzip");
-    server.send_P(200, "text/html", indexhtmlgz);
+    server.sendHeader(F("Content-Encoding"), F("gzip"));
+    server.send_P(200, PSTR("text/html"), indexhtmlgz, sizeof(indexhtmlgz));
   });
 
   //sn url is a way to find module on network
@@ -99,8 +99,8 @@ void Core::appInitWebServer(ESP8266WebServer &server, bool &shouldReboot, bool &
 #else
     sprintf_P(chipID, PSTR("%08x"), (uint32_t)(ESP.getEfuseMac() << 40 >> 40));
 #endif
-    server.sendHeader("Access-Control-Allow-Origin", "*"); //allow this URL to be requested from everywhere
-    server.sendHeader("Cache-Control", "no-cache");
+    server.sendHeader(F("Access-Control-Allow-Origin"), F("*")); //allow this URL to be requested from everywhere
+    server.sendHeader(F("Cache-Control"), F("no-cache"));
     server.send(200, "text/html", chipID);
   });
 
@@ -113,8 +113,8 @@ void Core::appInitWebServer(ESP8266WebServer &server, bool &shouldReboot, bool &
 #else
     sprintf_P(discoJSON, PSTR("{\"sn\":\"%08x\",\"m\":\"%s\",\"v\":\"%s\"}"), (uint32_t)(ESP.getEfuseMac() << 40 >> 40), APPLICATION1_NAME, BASE_VERSION "/" VERSION);
 #endif
-    server.sendHeader("Access-Control-Allow-Origin", "*"); //allow this URL to be requested from everywhere
-    server.sendHeader("Cache-Control", "no-cache");
+    server.sendHeader(F("Access-Control-Allow-Origin"), F("*")); //allow this URL to be requested from everywhere
+    server.sendHeader(F("Cache-Control"), F("no-cache"));
     server.send(200, "text/json", discoJSON);
   });
 
@@ -122,7 +122,7 @@ void Core::appInitWebServer(ESP8266WebServer &server, bool &shouldReboot, bool &
   server.on("/fw", HTTP_POST, [&shouldReboot, &pauseApplication, &server]() {
     shouldReboot = !Update.hasError();
     if (shouldReboot) {
-      server.sendHeader("Connection", "close");
+      server.sendHeader(F("Connection"), F("close"));
       server.send(200, F("text/html"), F("Firmware Successfully Uploaded<script>setTimeout(function(){if('referrer' in document)window.location=document.referrer;},10000);</script>"));
     }
     else {
@@ -173,7 +173,7 @@ void Core::appInitWebServer(ESP8266WebServer &server, bool &shouldReboot, bool &
 #else
       errorMsg=Update.errorString();
 #endif
-      server.sendHeader("Connection", "close");
+      server.sendHeader(F("Connection"), F("close"));
       server.send(500, "text/html", errorMsg);
     } }, [&pauseApplication, &server]() {
     HTTPUpload& upload = server.upload();
@@ -239,21 +239,21 @@ void Core::appInitWebServer(ESP8266WebServer &server, bool &shouldReboot, bool &
 
   //Ressources URLs
   server.on("/pure-min.css", HTTP_GET, [&server]() {
-    server.sendHeader("Content-Encoding", "gzip");
-    server.sendHeader("Cache-Control", "max-age=604800, public");
-    server.send_P(200, PSTR("text/css"), puremincssgz);
+    server.sendHeader(F("Content-Encoding"), F("gzip"));
+    server.sendHeader(F("Cache-Control"), F("max-age=604800, public"));
+    server.send_P(200, PSTR("text/css"), puremincssgz, sizeof(puremincssgz));
   });
 
   server.on("/side-menu.css", HTTP_GET, [&server]() {
-    server.sendHeader("Content-Encoding", "gzip");
-    server.sendHeader("Cache-Control", "max-age=604800, public");
-    server.send_P(200, PSTR("text/css"), sidemenucssgz);
+    server.sendHeader(F("Content-Encoding"), F("gzip"));
+    server.sendHeader(F("Cache-Control"), F("max-age=604800, public"));
+    server.send_P(200, PSTR("text/css"), sidemenucssgz, sizeof(sidemenucssgz));
   });
 
   server.on("/side-menu.js", HTTP_GET, [&server]() {
-    server.sendHeader("Content-Encoding", "gzip");
-    server.sendHeader("Cache-Control", "max-age=604800, public");
-    server.send_P(200, PSTR("text/javascript"), sidemenujsgz);
+    server.sendHeader(F("Content-Encoding"), F("gzip"));
+    server.sendHeader(F("Cache-Control"), F("max-age=604800, public"));
+    server.send_P(200, PSTR("text/javascript"), sidemenujsgz, sizeof(sidemenujsgz));
   });
 
   //Special Developper pages

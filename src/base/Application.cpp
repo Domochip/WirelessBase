@@ -100,42 +100,42 @@ void Application::initWebServer(ESP8266WebServer &server, bool &shouldReboot, bo
   //HTML Status handler
   sprintf_P(url, PSTR("/status%c.html"), _appId);
   server.on(url, HTTP_GET, [this, &server]() {
-    server.sendHeader("Content-Encoding", "gzip");
-    server.send_P(200, "text/html", getHTMLContent(status));
+    server.sendHeader(F("Content-Encoding"), F("gzip"));
+    server.send_P(200, PSTR("text/html"), getHTMLContent(status), getHTMLContentSize(status));
   });
 
   //HTML Config handler
   sprintf_P(url, PSTR("/config%c.html"), _appId);
   server.on(url, HTTP_GET, [this, &server]() {
-    server.sendHeader("Content-Encoding", "gzip");
-    server.send_P(200, "text/html", getHTMLContent(config));
+    server.sendHeader(F("Content-Encoding"), F("gzip"));
+    server.send_P(200, PSTR("text/html"), getHTMLContent(config), getHTMLContentSize(config));
   });
 
   //HTML fw handler
   sprintf_P(url, PSTR("/fw%c.html"), _appId);
   server.on(url, HTTP_GET, [this, &server]() {
-    server.sendHeader("Content-Encoding", "gzip");
-    server.send_P(200, "text/html", getHTMLContent(fw));
+    server.sendHeader(F("Content-Encoding"), F("gzip"));
+    server.send_P(200, PSTR("text/html"), getHTMLContent(fw), getHTMLContentSize(fw));
   });
 
   //HTML discover handler
   sprintf_P(url, PSTR("/discover%c.html"), _appId);
   server.on(url, HTTP_GET, [this, &server]() {
-    server.sendHeader("Content-Encoding", "gzip");
-    server.send_P(200, "text/html", getHTMLContent(discover));
+    server.sendHeader(F("Content-Encoding"), F("gzip"));
+    server.send_P(200, PSTR("text/html"), getHTMLContent(discover), getHTMLContentSize(discover));
   });
 
   //JSON Status handler
   sprintf_P(url, PSTR("/gs%c"), _appId);
   server.on(url, HTTP_GET, [this, &server]() {
-    server.sendHeader("Cache-Control", "no-cache");
+    server.sendHeader(F("Cache-Control"), F("no-cache"));
     server.send(200, F("text/json"), generateStatusJSON());
   });
 
   //JSON Config handler
   sprintf_P(url, PSTR("/gc%c"), _appId);
   server.on(url, HTTP_GET, [this, &server]() {
-    server.sendHeader("Cache-Control", "no-cache");
+    server.sendHeader(F("Cache-Control"), F("no-cache"));
     server.send(200, F("text/json"), generateConfigJSON());
   });
 
