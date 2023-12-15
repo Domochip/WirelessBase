@@ -150,7 +150,7 @@ void Application::initWebServer(ESP8266WebServer &server, bool &shouldReboot, bo
     //Send client answer
     if (result)
     {
-      server.send(200, String(), String());
+      server.send(200);
       _reInit = true;
     }
     else
