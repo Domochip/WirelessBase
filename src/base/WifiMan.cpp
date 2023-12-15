@@ -114,64 +114,64 @@ void WifiMan::parseConfigJSON(DynamicJsonDocument &doc)
 
 bool WifiMan::parseConfigWebRequest(ESP8266WebServer &server)
 {
+  
+  //basic control
+  if (!server.hasArg(F("s")))
+  {
+    server.send_P(400, PSTR("text/html"), PSTR("SSID missing"));
+    return false;
+  }
 
-  // //basic control
-  // if (!request->hasParam(F("s"), true))
-  // {
-  //   request->send(400, F("text/html"), F("SSID missing"));
-  //   return false;
-  // }
+  char tempPassword[64 + 1] = {0};
 
-  // char tempPassword[64 + 1] = {0};
+  if (server.hasArg(F("s")) && server.arg(F("s")).length() < sizeof(ssid))
+    strcpy(ssid, server.arg(F("s")).c_str());
 
-  // if (request->hasParam(F("s"), true) && request->getParam(F("s"), true)->value().length() < sizeof(ssid))
-  //   strcpy(ssid, request->getParam(F("s"), true)->value().c_str());
+  if (server.hasArg(F("p")) && server.arg(F("p")).length() < sizeof(tempPassword))
+    strcpy(tempPassword, server.arg(F("p")).c_str());
+  if (server.hasArg(F("h")) && server.arg(F("h")).length() < sizeof(hostname))
+    strcpy(hostname, server.arg(F("h")).c_str());
 
-  // if (request->hasParam(F("p"), true) && request->getParam(F("p"), true)->value().length() < sizeof(tempPassword))
-  //   strcpy(tempPassword, request->getParam(F("p"), true)->value().c_str());
-  // if (request->hasParam(F("h"), true) && request->getParam(F("h"), true)->value().length() < sizeof(hostname))
-  //   strcpy(hostname, request->getParam(F("h"), true)->value().c_str());
+  IPAddress ipParser;
+  if (server.hasArg(F("ip")))
+  {
+    if (ipParser.fromString(server.arg(F("ip"))))
+      ip = static_cast<uint32_t>(ipParser);
+    else
+      ip = 0;
+  }
+  if (server.hasArg(F("gw")))
+  {
+    if (ipParser.fromString(server.arg(F("gw"))))
+      gw = static_cast<uint32_t>(ipParser);
+    else
+      gw = 0;
+  }
+  if (server.hasArg(F("mask")))
+  {
+    if (ipParser.fromString(server.arg(F("mask"))))
+      mask = static_cast<uint32_t>(ipParser);
+    else
+      mask = 0;
+  }
+  if (server.hasArg(F("dns1")))
+  {
+    if (ipParser.fromString(server.arg(F("dns1"))))
+      dns1 = static_cast<uint32_t>(ipParser);
+    else
+      dns1 = 0;
+  }
+  if (server.hasArg(F("dns2")))
+  {
+    if (ipParser.fromString(server.arg(F("dns2"))))
+      dns2 = static_cast<uint32_t>(ipParser);
+    else
+      dns2 = 0;
+  }
 
-  // IPAddress ipParser;
-  // if (request->hasParam(F("ip"), true))
-  // {
-  //   if (ipParser.fromString(request->getParam(F("ip"), true)->value()))
-  //     ip = static_cast<uint32_t>(ipParser);
-  //   else
-  //     ip = 0;
-  // }
-  // if (request->hasParam(F("gw"), true))
-  // {
-  //   if (ipParser.fromString(request->getParam(F("gw"), true)->value()))
-  //     gw = static_cast<uint32_t>(ipParser);
-  //   else
-  //     gw = 0;
-  // }
-  // if (request->hasParam(F("mask"), true))
-  // {
-  //   if (ipParser.fromString(request->getParam(F("mask"), true)->value()))
-  //     mask = static_cast<uint32_t>(ipParser);
-  //   else
-  //     mask = 0;
-  // }
-  // if (request->hasParam(F("dns1"), true))
-  // {
-  //   if (ipParser.fromString(request->getParam(F("dns1"), true)->value()))
-  //     dns1 = static_cast<uint32_t>(ipParser);
-  //   else
-  //     dns1 = 0;
-  // }
-  // if (request->hasParam(F("dns2"), true))
-  // {
-  //   if (ipParser.fromString(request->getParam(F("dns2"), true)->value()))
-  //     dns2 = static_cast<uint32_t>(ipParser);
-  //   else
-  //     dns2 = 0;
-  // }
-
-  // //check for previous password ssid (there is a predefined special password that mean to keep already saved one)
-  // if (strcmp_P(tempPassword, predefPassword))
-  //   strcpy(password, tempPassword);
+  //check for previous password ssid (there is a predefined special password that mean to keep already saved one)
+  if (strcmp_P(tempPassword, predefPassword))
+    strcpy(password, tempPassword);
 
   return true;
 }
