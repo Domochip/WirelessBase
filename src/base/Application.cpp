@@ -93,7 +93,7 @@ void Application::init(bool skipExistingConfig)
 #endif
 }
 
-void Application::initWebServer(AsyncWebServer &server, bool &shouldReboot, bool &pauseApplication)
+void Application::initWebServer(ESP8266WebServer &server, bool &shouldReboot, bool &pauseApplication)
 {
   char url[16];
 

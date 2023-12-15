@@ -77,7 +77,7 @@ size_t Core::getHTMLContentSize(WebPageForPlaceHolder wp)
   };
   return 0;
 };
-void Core::appInitWebServer(AsyncWebServer &server, bool &shouldReboot, bool &pauseApplication)
+void Core::appInitWebServer(ESP8266WebServer &server, bool &shouldReboot, bool &pauseApplication)
 {
   //root is index
   server.on("/", HTTP_GET, [](AsyncWebServerRequest *request) {

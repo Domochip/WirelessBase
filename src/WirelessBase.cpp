@@ -99,7 +99,7 @@ size_t MyApplication::getHTMLContentSize(WebPageForPlaceHolder wp){
 
 //------------------------------------------
 //code to register web request answer to the web server
-void MyApplication::appInitWebServer(AsyncWebServer &server, bool &shouldReboot, bool &pauseApplication){
+void MyApplication::appInitWebServer(ESP8266WebServer &server, bool &shouldReboot, bool &pauseApplication){
     //TODO
     //server.on("/getColor", HTTP_GET, [this](AsyncWebServerRequest * request) {request->send(200, F("text/html"), GetColor());});
 };

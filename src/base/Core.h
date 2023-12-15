@@ -23,7 +23,7 @@ private:
   bool appInit(bool reInit);
   const uint8_t* getHTMLContent(WebPageForPlaceHolder wp);
   size_t getHTMLContentSize(WebPageForPlaceHolder wp);
-  void appInitWebServer(AsyncWebServer &server, bool &shouldReboot, bool &pauseApplication);
+  void appInitWebServer(ESP8266WebServer &server, bool &shouldReboot, bool &pauseApplication);
   void appRun(){};
 
 public:

@@ -380,7 +380,7 @@ size_t WifiMan::getHTMLContentSize(WebPageForPlaceHolder wp)
   return 0;
 };
 
-void WifiMan::appInitWebServer(AsyncWebServer &server, bool &shouldReboot, bool &pauseApplication)
+void WifiMan::appInitWebServer(ESP8266WebServer &server, bool &shouldReboot, bool &pauseApplication)
 {
 
   server.on("/wnl", HTTP_GET, [this](AsyncWebServerRequest *request) {
