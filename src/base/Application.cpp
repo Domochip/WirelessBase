@@ -129,19 +129,19 @@ void Application::initWebServer(ESP8266WebServer &server, bool &shouldReboot, bo
   sprintf_P(url, PSTR("/gs%c"), _appId);
   server.on(url, HTTP_GET, [this, &server]() {
     server.sendHeader("Cache-Control", "no-cache");
-    server.send(200, "text/json", generateStatusJSON());
+    server.send(200, F("text/json"), generateStatusJSON());
   });
 
   //JSON Config handler
   sprintf_P(url, PSTR("/gc%c"), _appId);
   server.on(url, HTTP_GET, [this, &server]() {
     server.sendHeader("Cache-Control", "no-cache");
-    server.send(200, "text/json", generateConfigJSON());
+    server.send(200, F("text/json"), generateConfigJSON());
   });
 
   sprintf_P(url, PSTR("/sc%c"), _appId);
-  server.on(url, HTTP_POST, [this](AsyncWebServerRequest *request) {
-    if (!parseConfigWebRequest(request))
+  server.on(url, HTTP_POST, [this, &server]() {
+    if (!parseConfigWebRequest())
       return;
 
     //then save
@@ -150,11 +150,11 @@ void Application::initWebServer(ESP8266WebServer &server, bool &shouldReboot, bo
     //Send client answer
     if (result)
     {
-      request->send(200);
+      server.send(200, String(), String());
       _reInit = true;
     }
     else
-      request->send(500, F("text/html"), F("Configuration hasn't been saved"));
+      server.send(500, F("text/html"), F("Configuration hasn't been saved"));
   });
 
 #if ENABLE_STATUS_EVENTSOURCE
