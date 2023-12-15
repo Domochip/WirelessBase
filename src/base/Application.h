@@ -3,7 +3,7 @@
 
 #include "..\Main.h"
 #include <LittleFS.h>
-#include <ESPAsyncWebServer.h>
+#include <ESP8266WebServer.h>
 #include <ArduinoJson.h>
 
 //Maximum size that can be allocated to Parsed JSON
