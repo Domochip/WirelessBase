@@ -40,7 +40,7 @@ protected:
   virtual String generateConfigJSON(bool forSaveFile = false) = 0;
   virtual String generateStatusJSON() = 0;
   virtual bool appInit(bool reInit = false) = 0;
-  virtual const uint8_t *getHTMLContent(WebPageForPlaceHolder wp) = 0;
+  virtual const PROGMEM char *getHTMLContent(WebPageForPlaceHolder wp) = 0;
   virtual size_t getHTMLContentSize(WebPageForPlaceHolder wp) = 0;
   virtual void appInitWebServer(ESP8266WebServer &server, bool &shouldReboot, bool &pauseApplication) = 0;
   virtual void appRun() = 0;

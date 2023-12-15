@@ -99,50 +99,44 @@ void Application::initWebServer(ESP8266WebServer &server, bool &shouldReboot, bo
 
   //HTML Status handler
   sprintf_P(url, PSTR("/status%c.html"), _appId);
-  server.on(url, HTTP_GET, [this](AsyncWebServerRequest *request) {
-    AsyncWebServerResponse *response = request->beginResponse_P(200, F("text/html"), getHTMLContent(status), getHTMLContentSize(status));
-    response->addHeader("Content-Encoding", "gzip");
-    request->send(response);
+  server.on(url, HTTP_GET, [this, &server]() {
+    server.sendHeader("Content-Encoding", "gzip");
+    server.send_P(200, "text/html", getHTMLContent(status));
   });
 
   //HTML Config handler
   sprintf_P(url, PSTR("/config%c.html"), _appId);
-  server.on(url, HTTP_GET, [this](AsyncWebServerRequest *request) {
-    AsyncWebServerResponse *response = request->beginResponse_P(200, F("text/html"), getHTMLContent(config), getHTMLContentSize(config));
-    response->addHeader("Content-Encoding", "gzip");
-    request->send(response);
+  server.on(url, HTTP_GET, [this, &server]() {
+    server.sendHeader("Content-Encoding", "gzip");
+    server.send_P(200, "text/html", getHTMLContent(config));
   });
 
   //HTML fw handler
   sprintf_P(url, PSTR("/fw%c.html"), _appId);
-  server.on(url, HTTP_GET, [this](AsyncWebServerRequest *request) {
-    AsyncWebServerResponse *response = request->beginResponse_P(200, F("text/html"), getHTMLContent(fw), getHTMLContentSize(fw));
-    response->addHeader("Content-Encoding", "gzip");
-    request->send(response);
+  server.on(url, HTTP_GET, [this, &server]() {
+    server.sendHeader("Content-Encoding", "gzip");
+    server.send_P(200, "text/html", getHTMLContent(fw));
   });
 
   //HTML discover handler
   sprintf_P(url, PSTR("/discover%c.html"), _appId);
-  server.on(url, HTTP_GET, [this](AsyncWebServerRequest *request) {
-    AsyncWebServerResponse *response = request->beginResponse_P(200, F("text/html"), getHTMLContent(discover), getHTMLContentSize(discover));
-    response->addHeader("Content-Encoding", "gzip");
-    request->send(response);
+  server.on(url, HTTP_GET, [this, &server]() {
+    server.sendHeader("Content-Encoding", "gzip");
+    server.send_P(200, "text/html", getHTMLContent(discover));
   });
 
   //JSON Status handler
   sprintf_P(url, PSTR("/gs%c"), _appId);
-  server.on(url, HTTP_GET, [this](AsyncWebServerRequest *request) {
-    AsyncWebServerResponse *response = request->beginResponse(200, F("text/json"), generateStatusJSON());
-    response->addHeader("Cache-Control", "no-cache");
-    request->send(response);
+  server.on(url, HTTP_GET, [this, &server]() {
+    server.sendHeader("Cache-Control", "no-cache");
+    server.send(200, "text/json", generateStatusJSON());
   });
 
   //JSON Config handler
   sprintf_P(url, PSTR("/gc%c"), _appId);
-  server.on(url, HTTP_GET, [this](AsyncWebServerRequest *request) {
-    AsyncWebServerResponse *response = request->beginResponse(200, F("text/json"), generateConfigJSON());
-    response->addHeader("Cache-Control", "no-cache");
-    request->send(response);
+  server.on(url, HTTP_GET, [this, &server]() {
+    server.sendHeader("Cache-Control", "no-cache");
+    server.send(200, "text/json", generateConfigJSON());
   });
 
   sprintf_P(url, PSTR("/sc%c"), _appId);
