@@ -108,6 +108,18 @@ void MyApplication::appInitWebServer(ESP8266WebServer &server, bool &shouldReboo
 //Run for timer
 void MyApplication::appRun()
 {
+#if ENABLE_STATUS_EVTSRC
+  // last time status event source was sent
+  static unsigned long lastEvtSrcSentMillis;
+
+  unsigned long currentMillis = millis();
+
+  if (currentMillis - lastEvtSrcSentMillis >= 10000) { // Check if it's time to send a new event
+      statusEventSourceBroadcast(F("{\"Hello\":\"World\"}")); // Send a message to all connected clients
+      lastEvtSrcSentMillis = currentMillis;
+  }
+#endif
+
     //TODO : implement run tasks (receive from serial, run timer, etc.)
 }
 
