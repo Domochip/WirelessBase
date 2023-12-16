@@ -5,6 +5,7 @@
 #include <LittleFS.h>
 #include <ESP8266WebServer.h>
 #include <ArduinoJson.h>
+#include <Ticker.h>
 
 //Maximum size that can be allocated to Parsed JSON
 #define JSON_DOC_MAX_MEM_SIZE 4096
@@ -25,8 +26,20 @@ protected:
   String _appName;
   bool _reInit = false;
 
-#if ENABLE_STATUS_EVENTSOURCE
-  AsyncEventSource _statusEventSource; //initialized during Constructor
+#if ENABLE_STATUS_EVTSRC
+  WiFiClient _statusEvtSrcClient[STATUS_EVTSRC_MAX_CLIENTS];
+#if ENABLE_STATUS_EVTSRC_KEEPALIVE
+  bool _needStatusEvtSrcKeepAlive = false;
+  Ticker _statusEvtSrcKeepAliveTicker;
+#endif
+#endif
+
+#if ENABLE_STATUS_EVTSRC
+  void statusEventSourceHandler(ESP8266WebServer &server);
+  void statusEventSourceBroadcast(const String &message,const String &eventType = "message");
+#if ENABLE_STATUS_EVTSRC_KEEPALIVE
+  void statusEventSourceKeepAlive();
+#endif
 #endif
 
   //already built methods
@@ -47,11 +60,7 @@ protected:
 
 public:
   //already built methods
-#if ENABLE_STATUS_EVENTSOURCE
-  Application(char appId, String appName) : _statusEventSource(String(F("/statusEvt")) + appId)
-#else
   Application(char appId, String appName)
-#endif
   {
     _appId = appId;
     _appName = appName;

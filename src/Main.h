@@ -18,7 +18,9 @@
 #define DEFAULT_AP_PSK "PasswordBase"
 
 //Enable status webpage EventSource
-#define ENABLE_STATUS_EVENTSOURCE 0
+#define ENABLE_STATUS_EVTSRC 1
+#define STATUS_EVTSRC_MAX_CLIENTS 2
+#define ENABLE_STATUS_EVTSRC_KEEPALIVE 0
 
 //Enable developper mode
 #define DEVELOPPER_MODE 0
