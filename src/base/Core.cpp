@@ -256,12 +256,6 @@ void Core::appInitWebServer(ESP8266WebServer &server, bool &shouldReboot, bool &
     server.send_P(200, PSTR("text/javascript"), sidemenujsgz, sizeof(sidemenujsgz));
   });
 
-  //Special Developper pages
-  // wait for LittleFSEditor
-// #if DEVELOPPER_MODE
-//   server.addHandler(new SPIFFSEditor("TODO", "TODO"));
-// #endif
-
   //404 on not found
   server.onNotFound([&server]() {
     server.send(404);

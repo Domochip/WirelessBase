@@ -20,7 +20,7 @@
 //Enable status webpage EventSource
 #define ENABLE_STATUS_EVENTSOURCE 0
 
-//Enable developper mode (SPIFFS editor)
+//Enable developper mode
 #define DEVELOPPER_MODE 0
 
 //Log Serial Object
@@ -49,5 +49,3 @@
 #endif
 
 #endif
-
-
