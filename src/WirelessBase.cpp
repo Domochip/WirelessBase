@@ -2,18 +2,20 @@
 
 //------------------------------------------
 // Used to initialize configuration properties to default values
-void MyApplication::setConfigDefaultValues(){
-    // TODO
-    // property1 = 0;
-    // property2 = F("test");
+void MyApplication::setConfigDefaultValues()
+{
+  // TODO
+  // property1 = 0;
+  // property2 = F("test");
 }
 
 //------------------------------------------
 // Parse JSON object into configuration properties
-void MyApplication::parseConfigJSON(DynamicJsonDocument &doc){
-    // TODO
-    // if (!doc["prop1"].isNull()) property1 = doc[F("prop1")];
-    // if (!doc["prop2"].isNull()) strlcpy(property2, doc["prop2"], sizeof(property2));
+void MyApplication::parseConfigJSON(DynamicJsonDocument &doc)
+{
+  // TODO
+  // if (!doc["prop1"].isNull()) property1 = doc[F("prop1")];
+  // if (!doc["prop2"].isNull()) strlcpy(property2, doc["prop2"], sizeof(property2));
 }
 
 //------------------------------------------
@@ -26,7 +28,7 @@ bool MyApplication::parseConfigWebRequest(ESP8266WebServer &server)
   //      server.send(400, F("text/html"), F("prop1 missing"));
   //      return false;
   //  }
-  // if (server.hasArg(F("prop1"))) property1 = request->getParam(F("prop1"), true)->value().toInt();
+  // if (server.hasArg(F("prop1"))) property1 = server.arg(F("prop1")).toInt();
   // if (server.hasArg(F("prop2")) && server.arg(F("prop2")).length() < sizeof(property2)) strcpy(property2, server.arg(F("prop2")).c_str());
 
   return true;
@@ -110,9 +112,10 @@ size_t MyApplication::getHTMLContentSize(WebPageForPlaceHolder wp)
 
 //------------------------------------------
 // code to register web request answer to the web server
-void MyApplication::appInitWebServer(ESP8266WebServer &server, bool &shouldReboot, bool &pauseApplication){
-    // TODO
-    // server.on("/getColor", HTTP_GET, [this, &server]() {server.send(200, F("text/html"), GetColor());});
+void MyApplication::appInitWebServer(ESP8266WebServer &server, bool &shouldReboot, bool &pauseApplication)
+{
+  // TODO
+  // server.on("/getColor", HTTP_GET, [this, &server]() {server.send(200, F("text/html"), GetColor());});
 }
 
 //------------------------------------------
