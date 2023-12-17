@@ -11,15 +11,15 @@ const char appDataPredefPassword[] PROGMEM = "ewcXoCt4HHjZUvY1";
 #include "data\status1.html.gz.h"
 #include "data\config1.html.gz.h"
 
-//TODO : Rename MyApplication
+// TODO : Rename MyApplication
 class MyApplication : public Application
 {
 private:
-  //TODO : Declare configuration properies
+  // TODO : Declare configuration properies
 
-  //TODO : Declare run/status properties
+  // TODO : Declare run/status properties
 
-  //TODO : Declare required private methods
+  // TODO : Declare required private methods
 
   void setConfigDefaultValues();
   void parseConfigJSON(DynamicJsonDocument &doc);
