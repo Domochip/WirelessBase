@@ -6,14 +6,16 @@ void MyApplication::setConfigDefaultValues(){
     // TODO
     // property1 = 0;
     // property2 = F("test");
-};
+}
+
 //------------------------------------------
 // Parse JSON object into configuration properties
 void MyApplication::parseConfigJSON(DynamicJsonDocument &doc){
     // TODO
     // if (!doc["prop1"].isNull()) property1 = doc[F("prop1")];
     // if (!doc["prop2"].isNull()) strlcpy(property2, doc["prop2"], sizeof(property2));
-};
+}
+
 //------------------------------------------
 // Parse HTTP POST parameters in request into configuration properties
 bool MyApplication::parseConfigWebRequest(ESP8266WebServer &server)
@@ -28,7 +30,8 @@ bool MyApplication::parseConfigWebRequest(ESP8266WebServer &server)
   // if (request->hasParam(F("prop2"), true) && request->getParam(F("prop2"), true)->value().length() < sizeof(property2)) strcpy(property2, request->getParam(F("prop2"), true)->value().c_str());
 
   return true;
-};
+}
+
 //------------------------------------------
 // Generate JSON from configuration properties
 String MyApplication::generateConfigJSON(bool forSaveFile = false)
@@ -41,7 +44,8 @@ String MyApplication::generateConfigJSON(bool forSaveFile = false)
   gc += '}';
 
   return gc;
-};
+}
+
 //------------------------------------------
 // Generate JSON of application status
 String MyApplication::generateStatusJSON()
@@ -55,7 +59,8 @@ String MyApplication::generateStatusJSON()
   gs += '}';
 
   return gs;
-};
+}
+
 //------------------------------------------
 // code to execute during initialization and reinitialization of the app
 bool MyApplication::appInit(bool reInit)
@@ -64,7 +69,8 @@ bool MyApplication::appInit(bool reInit)
   // if (toto.enabled) _sendTimer.setInterval(SEND_PERIOD, [this]() {this->SendTimerTick();});
 
   return true;
-};
+}
+
 //------------------------------------------
 // Return HTML Code to insert into Status Web page
 const PROGMEM char *MyApplication::getHTMLContent(WebPageForPlaceHolder wp)
@@ -82,7 +88,8 @@ const PROGMEM char *MyApplication::getHTMLContent(WebPageForPlaceHolder wp)
     break;
   };
   return nullptr;
-};
+}
+
 // and his Size
 size_t MyApplication::getHTMLContentSize(WebPageForPlaceHolder wp)
 {
@@ -99,14 +106,14 @@ size_t MyApplication::getHTMLContentSize(WebPageForPlaceHolder wp)
     break;
   };
   return 0;
-};
+}
 
 //------------------------------------------
 // code to register web request answer to the web server
 void MyApplication::appInitWebServer(ESP8266WebServer &server, bool &shouldReboot, bool &pauseApplication){
     // TODO
     // server.on("/getColor", HTTP_GET, [this](AsyncWebServerRequest * request) {request->send(200, F("text/html"), GetColor());});
-};
+}
 
 //------------------------------------------
 // Run for timer
