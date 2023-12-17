@@ -21,13 +21,13 @@ void MyApplication::parseConfigJSON(DynamicJsonDocument &doc){
 bool MyApplication::parseConfigWebRequest(ESP8266WebServer &server)
 {
   // TODO
-  //  if (!request->hasParam(F("prop1"), true))
+  //  if (!server.hasArg(F("prop1")))
   //  {
-  //      request->send(400, F("text/html"), F("prop1 missing"));
+  //      server.send(400, F("text/html"), F("prop1 missing"));
   //      return false;
   //  }
-  // if (request->hasParam(F("prop1"), true)) property1 = request->getParam(F("prop1"), true)->value().toInt();
-  // if (request->hasParam(F("prop2"), true) && request->getParam(F("prop2"), true)->value().length() < sizeof(property2)) strcpy(property2, request->getParam(F("prop2"), true)->value().c_str());
+  // if (server.hasArg(F("prop1"))) property1 = request->getParam(F("prop1"), true)->value().toInt();
+  // if (server.hasArg(F("prop2")) && server.arg(F("prop2")).length() < sizeof(property2)) strcpy(property2, server.arg(F("prop2")).c_str());
 
   return true;
 }
@@ -112,7 +112,7 @@ size_t MyApplication::getHTMLContentSize(WebPageForPlaceHolder wp)
 // code to register web request answer to the web server
 void MyApplication::appInitWebServer(ESP8266WebServer &server, bool &shouldReboot, bool &pauseApplication){
     // TODO
-    // server.on("/getColor", HTTP_GET, [this](AsyncWebServerRequest * request) {request->send(200, F("text/html"), GetColor());});
+    // server.on("/getColor", HTTP_GET, [this, &server]() {server.send(200, F("text/html"), GetColor());});
 }
 
 //------------------------------------------
