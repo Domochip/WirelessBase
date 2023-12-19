@@ -230,7 +230,8 @@ void Application::initWebServer(ESP8266WebServer &server, bool &shouldReboot, bo
 
 #if ENABLE_STATUS_EVTSRC
   // register EventSource Uri
-  server.on(String(F("/statusEvt")) + _appId, [this, &server]()
+  sprintf_P(url, PSTR("/statusEvt%c"), _appId);
+  server.on(url, HTTP_GET, [this, &server]()
             { statusEventSourceHandler(server); });
 #if ENABLE_STATUS_EVTSRC_KEEPALIVE
   // send keep alive event every 60 seconds
