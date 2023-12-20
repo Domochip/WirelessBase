@@ -195,5 +195,4 @@ void loop(void)
 #endif
     ESP.restart();
   }
-  yield();
 }
