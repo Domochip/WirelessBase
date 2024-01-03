@@ -43,6 +43,7 @@ public:
     using PubSubClient::beginPublish;
     using PubSubClient::endPublish;
     using PubSubClient::publish;
+    bool publishToConnectedTopic(const char *payload);
     using PubSubClient::publish_P;
     using PubSubClient::state;
     using PubSubClient::subscribe;

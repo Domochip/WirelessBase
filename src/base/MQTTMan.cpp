@@ -121,6 +121,13 @@ void MQTTMan::disconnect()
     }
 }
 
+bool MQTTMan::publishToConnectedTopic(const char *payload)
+{
+    if (_connectedAndWillTopic[0])
+        return publish(_connectedAndWillTopic, payload, true);
+    return false;
+}
+
 bool MQTTMan::loop()
 {
     if (state() != MQTT_DISCONNECTED)
