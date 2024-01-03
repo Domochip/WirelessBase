@@ -76,6 +76,12 @@ MQTTMan &MQTTMan::setConnectedCallback(CONNECTED_CALLBACK_SIGNATURE connectedCal
     return *this;
 }
 
+MQTTMan &MQTTMan::setDisconnectedCallback(DISCONNECTED_CALLBACK_SIGNATURE disconnectedCallback)
+{
+    _disconnectedCallBack = disconnectedCallback;
+    return *this;
+}
+
 bool MQTTMan::connect(const char *username, const char *password)
 {
     // check logins
@@ -107,13 +113,26 @@ void MQTTMan::disconnect()
     _mqttReconnectTicker.detach();
     // Disconnect
     if (connected()) // Issue #598 : disconnect() crash if client not yet set
+    {
         PubSubClient::disconnect();
+        // call disconnected callback if set
+        if (_disconnectedCallBack)
+            _disconnectedCallBack();
+    }
 }
 
 bool MQTTMan::loop()
 {
     if (state() != MQTT_DISCONNECTED)
     {
+        // evaluate connection status and call disconnected callback if needed
+        // if we are not connected, reconnect ticker not started nor _needMqttReconnect flag raised and disconnected callback set
+        if (!connected() && !(_mqttReconnectTicker.active() || _needMqttReconnect) && _disconnectedCallBack)
+            _disconnectedCallBack();
+
+        if (_needMqttReconnect)
+        {
+            _needMqttReconnect = false;
 #ifdef LOG_SERIAL
             LOG_SERIAL.print(F("MQTT Reconnection : "));
 #endif
