@@ -134,8 +134,8 @@ bool MQTTMan::loop()
         LOG_SERIAL.println(F("MQTT Disconnected"));
 #endif
         // set Ticker to reconnect after 20 or 60 sec (Wifi connected or not)
-        _mqttReconnectTicker.once_scheduled((WiFi.isConnected() ? 20 : 60), [this]()
-                                            { _needMqttReconnect = true; _mqttReconnectTicker.detach(); });
+        _mqttReconnectTicker.once((WiFi.isConnected() ? 20 : 60), [this]()
+                                  { _needMqttReconnect = true; });
     }
 
     return PubSubClient::loop();
