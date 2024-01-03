@@ -101,7 +101,7 @@ void MQTTMan::disconnect()
 {
     // publish disconnected just before disconnect...
     if (_connectedAndWillTopic[0])
-        publish(_connectedAndWillTopic, "0");
+        publish(_connectedAndWillTopic, "0", true);
 
     // Stop MQTT Reconnect
     _mqttReconnectTicker.detach();
