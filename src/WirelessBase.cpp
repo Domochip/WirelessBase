@@ -11,7 +11,7 @@ void MyApplication::setConfigDefaultValues()
 
 //------------------------------------------
 // Parse JSON object into configuration properties
-void MyApplication::parseConfigJSON(DynamicJsonDocument &doc)
+void MyApplication::parseConfigJSON(JsonDocument &doc)
 {
   // TODO
   // if (!doc["prop1"].isNull()) property1 = doc[F("prop1")];
