@@ -20,7 +20,7 @@ void MyApplication::parseConfigJSON(JsonDocument &doc)
 
 //------------------------------------------
 // Parse HTTP POST parameters in request into configuration properties
-bool MyApplication::parseConfigWebRequest(ESP8266WebServer &server)
+bool MyApplication::parseConfigWebRequest(WebServer &server)
 {
   // TODO
   //  if (!server.hasArg(F("prop1")))
@@ -112,7 +112,7 @@ size_t MyApplication::getHTMLContentSize(WebPageForPlaceHolder wp)
 
 //------------------------------------------
 // code to register web request answer to the web server
-void MyApplication::appInitWebServer(ESP8266WebServer &server, bool &shouldReboot, bool &pauseApplication)
+void MyApplication::appInitWebServer(WebServer &server, bool &shouldReboot, bool &pauseApplication)
 {
   // TODO
   // server.on("/getColor", HTTP_GET, [this, &server]() {server.send(200, F("text/html"), GetColor());});
