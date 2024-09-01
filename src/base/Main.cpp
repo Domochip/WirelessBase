@@ -118,7 +118,11 @@ void setup()
     LOG_SERIAL.println(F("-> RESCUE MODE : Stored configuration won't be loaded."));
   }
 #endif
+#ifdef ESP8266
   if (!LittleFS.begin())
+#else
+  if (!LittleFS.begin(true))
+#endif
   {
 #ifdef LOG_SERIAL
     LOG_SERIAL.println(F("/!\\   File System Mount Failed   /!\\"));
