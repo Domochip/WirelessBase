@@ -310,7 +310,11 @@ bool WifiMan::appInit(bool reInit = false)
   // Configure handlers
   if (!reInit)
   {
+#ifdef ESP8266
     _discoEventHandler = WiFi.onStationModeDisconnected([this](const WiFiEventStationModeDisconnected &evt)
+#else
+    WiFi.onEvent([this](WiFiEvent_t event, WiFiEventInfo_t info)
+#endif
                                                         {
                                                           if (!(WiFi.getMode() & WIFI_AP) && ssid[0])
                                                           {
@@ -325,18 +329,42 @@ bool WifiMan::appInit(bool reInit = false)
 #ifdef STATUS_LED_WARNING
                                                           STATUS_LED_WARNING
 #endif
-                                                        });
+                                                        }
+#ifndef ESP8266
+                                                        ,
+                                                        WiFiEvent_t::ARDUINO_EVENT_WIFI_STA_DISCONNECTED
+#endif
+    );
 
     // if station connect to softAP
+#ifdef ESP8266
     _staConnectedHandler = WiFi.onSoftAPModeStationConnected([this](const WiFiEventSoftAPModeStationConnected &evt)
+#else
+    WiFi.onEvent([this](WiFiEvent_t event, WiFiEventInfo_t info)
+#endif
                                                              {
       //flag it in _stationConnectedToSoftAP
-      _stationConnectedToSoftAP = true; });
+      _stationConnectedToSoftAP = true; }
+#ifndef ESP8266
+                                                             ,
+                                                             WiFiEvent_t::ARDUINO_EVENT_WIFI_AP_STACONNECTED
+#endif
+    );
+
     // if station disconnect of the softAP
+#ifdef ESP8266
     _staDisconnectedHandler = WiFi.onSoftAPModeStationDisconnected([this](const WiFiEventSoftAPModeStationDisconnected &evt)
+#else
+    WiFi.onEvent([this](WiFiEvent_t event, WiFiEventInfo_t info)
+#endif
                                                                    {
       //check if a station left
-      _stationConnectedToSoftAP = WiFi.softAPgetStationNum(); });
+      _stationConnectedToSoftAP = WiFi.softAPgetStationNum(); }
+#ifndef ESP8266
+                                                                   ,
+                                                                   WiFiEvent_t::ARDUINO_EVENT_WIFI_AP_STADISCONNECTED
+#endif
+    );
   }
 
   // Set hostname

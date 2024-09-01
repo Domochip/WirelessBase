@@ -31,9 +31,11 @@ private:
   uint32_t dns2 = 0;
 
   // Run properties
+  #ifdef ESP8266
   WiFiEventHandler _discoEventHandler;
   WiFiEventHandler _staConnectedHandler;
   WiFiEventHandler _staDisconnectedHandler;
+  #endif
   int _apChannel = 2;
   char _apSsid[64];
   bool _needRefreshWifi = false;
