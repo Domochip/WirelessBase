@@ -5,7 +5,11 @@
 #include "Application.h"
 
 #include <Ticker.h>
+#ifdef ESP8266
 #include <ESP8266mDNS.h>
+#else
+#include <ESPmDNS.h>
+#endif
 
 #include "data/statusw.html.gz.h"
 #include "data/configw.html.gz.h"

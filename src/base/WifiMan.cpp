@@ -432,6 +432,7 @@ void WifiMan::appRun()
     _needRefreshWifi = false;
     refreshWiFi();
   }
-
+#ifdef ESP8266
   MDNS.update();
+#endif
 }
