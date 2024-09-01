@@ -124,7 +124,7 @@ bool WifiMan::parseConfigWebRequest(WebServer &server)
   // basic control
   if (!server.hasArg(F("s")))
   {
-    server.keepAlive(false);
+    // server.keepAlive(false);
     server.send_P(400, PSTR("text/html"), PSTR("SSID missing"));
     return false;
   }
@@ -428,14 +428,14 @@ void WifiMan::appInitWebServer(WebServer &server, bool &shouldReboot, bool &paus
     int8_t n = WiFi.scanComplete();
     if (n == -2)
     {
-      server.keepAlive(false);
+      SERVER_KEEPALIVE_FALSE()
       server.sendHeader(F("Cache-Control"), F("no-cache"));
       server.send(200, F("text/json"), F("{\"r\":-2,\"wnl\":[]}"));
       WiFi.scanNetworks(true);
     }
     else if (n == -1)
     {
-      server.keepAlive(false);
+      SERVER_KEEPALIVE_FALSE()
       server.sendHeader(F("Cache-Control"), F("no-cache"));
       server.send(200, F("text/json"), F("{\"r\":-1,\"wnl\":[]}"));
     }
@@ -450,7 +450,7 @@ void WifiMan::appInitWebServer(WebServer &server, bool &shouldReboot, bool &paus
           networksJSON += ',';
       }
       networksJSON += F("]}");
-      server.keepAlive(false);
+      SERVER_KEEPALIVE_FALSE()
       server.sendHeader(F("Cache-Control"), F("no-cache"));
       server.send(200, F("text/json"), networksJSON);
       WiFi.scanDelete();

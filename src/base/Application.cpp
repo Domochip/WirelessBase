@@ -162,7 +162,7 @@ void Application::initWebServer(WebServer &server, bool &shouldReboot, bool &pau
   sprintf_P(url, PSTR("/status%c.html"), _appId);
   server.on(url, HTTP_GET, [this, &server]()
             {
-    server.keepAlive(false);
+    SERVER_KEEPALIVE_FALSE()
     server.sendHeader(F("Content-Encoding"), F("gzip"));
     server.send_P(200, PSTR("text/html"), getHTMLContent(status), getHTMLContentSize(status)); });
 
@@ -170,7 +170,7 @@ void Application::initWebServer(WebServer &server, bool &shouldReboot, bool &pau
   sprintf_P(url, PSTR("/config%c.html"), _appId);
   server.on(url, HTTP_GET, [this, &server]()
             {
-    server.keepAlive(false);
+    SERVER_KEEPALIVE_FALSE()
     server.sendHeader(F("Content-Encoding"), F("gzip"));
     server.send_P(200, PSTR("text/html"), getHTMLContent(config), getHTMLContentSize(config)); });
 
@@ -178,7 +178,7 @@ void Application::initWebServer(WebServer &server, bool &shouldReboot, bool &pau
   sprintf_P(url, PSTR("/fw%c.html"), _appId);
   server.on(url, HTTP_GET, [this, &server]()
             {
-    server.keepAlive(false);
+    SERVER_KEEPALIVE_FALSE()
     server.sendHeader(F("Content-Encoding"), F("gzip"));
     server.send_P(200, PSTR("text/html"), getHTMLContent(fw), getHTMLContentSize(fw)); });
 
@@ -186,7 +186,7 @@ void Application::initWebServer(WebServer &server, bool &shouldReboot, bool &pau
   sprintf_P(url, PSTR("/discover%c.html"), _appId);
   server.on(url, HTTP_GET, [this, &server]()
             {
-    server.keepAlive(false);
+    SERVER_KEEPALIVE_FALSE()
     server.sendHeader(F("Content-Encoding"), F("gzip"));
     server.send_P(200, PSTR("text/html"), getHTMLContent(discover), getHTMLContentSize(discover)); });
 
@@ -194,7 +194,7 @@ void Application::initWebServer(WebServer &server, bool &shouldReboot, bool &pau
   sprintf_P(url, PSTR("/gs%c"), _appId);
   server.on(url, HTTP_GET, [this, &server]()
             {
-    server.keepAlive(false);
+    SERVER_KEEPALIVE_FALSE()
     server.sendHeader(F("Cache-Control"), F("no-cache"));
     server.send(200, F("text/json"), generateStatusJSON()); });
 
@@ -202,7 +202,7 @@ void Application::initWebServer(WebServer &server, bool &shouldReboot, bool &pau
   sprintf_P(url, PSTR("/gc%c"), _appId);
   server.on(url, HTTP_GET, [this, &server]()
             {
-    server.keepAlive(false);
+    SERVER_KEEPALIVE_FALSE()
     server.sendHeader(F("Cache-Control"), F("no-cache"));
     server.send(200, F("text/json"), generateConfigJSON()); });
 
@@ -218,12 +218,12 @@ void Application::initWebServer(WebServer &server, bool &shouldReboot, bool &pau
     //Send client answer
     if (result)
     {
-      server.keepAlive(false);
+      SERVER_KEEPALIVE_FALSE()
       server.send(200);
       _reInit = true;
     }
     else{
-      server.keepAlive(false);
+      SERVER_KEEPALIVE_FALSE()
       server.send(500, F("text/html"), F("Configuration hasn't been saved"));
     } });
 
