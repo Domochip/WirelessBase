@@ -230,8 +230,13 @@ void Application::initWebServer(WebServer &server, bool &shouldReboot, bool &pau
             { statusEventSourceHandler(server); });
 #if ENABLE_STATUS_EVTSRC_KEEPALIVE
   // send keep alive event every 60 seconds
+#ifdef ESP8266
   _statusEvtSrcKeepAliveTicker.attach(60, [this]()
                                       { _needStatusEvtSrcKeepAlive = true; });
+#else
+  _statusEvtSrcKeepAliveTicker.attach<typeof this>(60, [](typeof this application)
+                                      { application->_needStatusEvtSrcKeepAlive = true; }, this);
+#endif
 #endif
 #endif
 

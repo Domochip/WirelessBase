@@ -54,8 +54,13 @@ void WifiMan::refreshWiFi()
 #ifdef LOG_SERIAL
         LOG_SERIAL.print(F("AP not found "));
 #endif
+#ifdef ESP8266
         _refreshTicker.once(_refreshPeriod, [this]()
                             { _needRefreshWifi = true; });
+#else
+        _refreshTicker.once<typeof this>(_refreshPeriod * 1000, [](typeof this wifiMan)
+                            { wifiMan->_needRefreshWifi = true; }, this);
+#endif
       }
     }
   }
