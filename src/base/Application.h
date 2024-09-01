@@ -6,8 +6,10 @@
 #ifdef ESP8266
 #include <ESP8266WebServer.h>
 #define WebServer ESP8266WebServer
+#define SERVER_KEEPALIVE_FALSE() server.keepAlive(false);
 #else
 #include <WebServer.h>
+#define SERVER_KEEPALIVE_FALSE()
 #endif
 #include <ArduinoJson.h>
 #include <Ticker.h>
