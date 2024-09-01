@@ -1,12 +1,15 @@
 #ifdef ESP8266
 #include <ESP8266WiFi.h>
+#include <ESP8266WebServer.h>
+#define WebServer ESP8266WebServer
 #else
 #include <WiFi.h>
+#include <WebServer.h>
 #endif
 #include <EEPROM.h>
 #include <LittleFS.h>
 #include <FS.h>
-#include <ESP8266WebServer.h>
+
 
 #include "Version.h"
 #include "../Main.h"
@@ -31,8 +34,8 @@ Core core('0', "Core");
 // WifiMan
 WifiMan wifiMan('w', "WiFi");
 
-// ESP8266WebServer
-ESP8266WebServer server(80);
+// WebServer
+WebServer server(80);
 // flag to pause application Run during Firmware Update
 bool pauseApplication = false;
 // variable used by objects to indicate system reboot is required

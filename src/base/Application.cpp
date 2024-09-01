@@ -2,7 +2,7 @@
 
 #if ENABLE_STATUS_EVTSRC
 
-void Application::statusEventSourceHandler(ESP8266WebServer &server)
+void Application::statusEventSourceHandler(WebServer &server)
 {
   uint8_t subPos = 0;
 
@@ -150,7 +150,7 @@ void Application::init(bool skipExistingConfig)
 #endif
 }
 
-void Application::initWebServer(ESP8266WebServer &server, bool &shouldReboot, bool &pauseApplication)
+void Application::initWebServer(WebServer &server, bool &shouldReboot, bool &pauseApplication)
 {
   char url[16];
 

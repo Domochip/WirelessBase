@@ -11,7 +11,7 @@
 
 void Core::setConfigDefaultValues(){};
 void Core::parseConfigJSON(JsonDocument &doc){};
-bool Core::parseConfigWebRequest(ESP8266WebServer &server) { return true; };
+bool Core::parseConfigWebRequest(WebServer &server) { return true; };
 String Core::generateConfigJSON(bool clearPassword = false) { return String(); };
 String Core::generateStatusJSON()
 {
@@ -76,7 +76,7 @@ size_t Core::getHTMLContentSize(WebPageForPlaceHolder wp)
   };
   return 0;
 }
-void Core::appInitWebServer(ESP8266WebServer &server, bool &shouldReboot, bool &pauseApplication)
+void Core::appInitWebServer(WebServer &server, bool &shouldReboot, bool &pauseApplication)
 {
   // root is index
   server.on("/", HTTP_GET, [&server]()

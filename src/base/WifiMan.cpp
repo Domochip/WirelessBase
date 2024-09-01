@@ -113,7 +113,7 @@ void WifiMan::parseConfigJSON(JsonDocument &doc)
     dns2 = doc["dns2"];
 }
 
-bool WifiMan::parseConfigWebRequest(ESP8266WebServer &server)
+bool WifiMan::parseConfigWebRequest(WebServer &server)
 {
 
   // basic control
@@ -387,7 +387,7 @@ size_t WifiMan::getHTMLContentSize(WebPageForPlaceHolder wp)
   return 0;
 }
 
-void WifiMan::appInitWebServer(ESP8266WebServer &server, bool &shouldReboot, bool &pauseApplication)
+void WifiMan::appInitWebServer(WebServer &server, bool &shouldReboot, bool &pauseApplication)
 {
 
   server.on("/wnl", HTTP_GET, [this, &server]()
