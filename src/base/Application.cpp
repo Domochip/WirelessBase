@@ -239,7 +239,7 @@ void Application::initWebServer(WebServer &server, bool &shouldReboot, bool &pau
                                       { _needStatusEvtSrcKeepAlive = true; });
 #else
   _statusEvtSrcKeepAliveTicker.attach<typeof this>(60, [](typeof this application)
-                                      { application->_needStatusEvtSrcKeepAlive = true; }, this);
+                                                   { application->_needStatusEvtSrcKeepAlive = true; }, this);
 #endif
 #endif
 #endif
