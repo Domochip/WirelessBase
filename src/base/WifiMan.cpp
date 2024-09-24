@@ -155,35 +155,35 @@ bool WifiMan::parseConfigWebRequest(WebServer &server)
     strcpy(hostname, jv.as<const char *>());
 
   IPAddress ipParser;
-  if ((jv = doc[F("ip")]).is<const char *>())
+  if ((jv = doc["ip"]).is<const char *>())
   {
     if (ipParser.fromString(jv.as<const char *>()))
       ip = static_cast<uint32_t>(ipParser);
     else
       ip = 0;
   }
-  if ((jv = doc[F("gw")]).is<const char *>())
+  if ((jv = doc["gw"]).is<const char *>())
   {
     if (ipParser.fromString(jv.as<const char *>()))
       gw = static_cast<uint32_t>(ipParser);
     else
       gw = 0;
   }
-  if ((jv = doc[F("mask")]).is<const char *>())
+  if ((jv = doc["mask"]).is<const char *>())
   {
     if (ipParser.fromString(jv.as<const char *>()))
       mask = static_cast<uint32_t>(ipParser);
     else
       mask = 0;
   }
-  if ((jv = doc[F("dns1")]).is<const char *>())
+  if ((jv = doc["dns1"]).is<const char *>())
   {
     if (ipParser.fromString(jv.as<const char *>()))
       dns1 = static_cast<uint32_t>(ipParser);
     else
       dns1 = 0;
   }
-  if ((jv = doc[F("dns2")]).is<const char *>())
+  if ((jv = doc["dns2"]).is<const char *>())
   {
     if (ipParser.fromString(jv.as<const char *>()))
       dns2 = static_cast<uint32_t>(ipParser);
