@@ -122,57 +122,70 @@ void WifiMan::parseConfigJSON(JsonDocument &doc)
 
 bool WifiMan::parseConfigWebRequest(WebServer &server)
 {
+  // config json is received in POST body (arg("plain"))
 
-  // basic control
-  if (!server.hasArg(F("s")))
+  // parse JSON
+  JsonDocument doc;
+  DeserializationError error = deserializeJson(doc, server.arg("plain"));
+
+  if (error)
   {
     SERVER_KEEPALIVE_FALSE()
-    server.send_P(400, PSTR("text/html"), PSTR("SSID missing"));
+    server.send(400, F("text/html"), F("Invalid JSON"));
     return false;
   }
 
+  // basic control
+  if (!doc["s"].is<const char *>())
+  {
+    SERVER_KEEPALIVE_FALSE()
+    server.send(400, F("text/html"), F("SSID missing"));
+    return false;
+  }
+
+  JsonVariant jv;
   char tempPassword[64 + 1] = {0};
 
-  if (server.hasArg(F("s")) && server.arg(F("s")).length() < sizeof(ssid))
-    strcpy(ssid, server.arg(F("s")).c_str());
+  if ((jv = doc["s"]).is<const char *>() && strlen(jv.as<const char *>()) < sizeof(ssid))
+    strcpy(ssid, jv.as<const char *>());
 
-  if (server.hasArg(F("p")) && server.arg(F("p")).length() < sizeof(tempPassword))
-    strcpy(tempPassword, server.arg(F("p")).c_str());
-  if (server.hasArg(F("h")) && server.arg(F("h")).length() < sizeof(hostname))
-    strcpy(hostname, server.arg(F("h")).c_str());
+  if ((jv = doc["p"]).is<const char *>() && strlen(jv.as<const char *>()) < sizeof(tempPassword))
+    strcpy(tempPassword, jv.as<const char *>());
+  if ((jv = doc["h"]).is<const char *>() && strlen(jv.as<const char *>()) < sizeof(hostname))
+    strcpy(hostname, jv.as<const char *>());
 
   IPAddress ipParser;
-  if (server.hasArg(F("ip")))
+  if ((jv = doc[F("ip")]).is<const char *>())
   {
-    if (ipParser.fromString(server.arg(F("ip"))))
+    if (ipParser.fromString(jv.as<const char *>()))
       ip = static_cast<uint32_t>(ipParser);
     else
       ip = 0;
   }
-  if (server.hasArg(F("gw")))
+  if ((jv = doc[F("gw")]).is<const char *>())
   {
-    if (ipParser.fromString(server.arg(F("gw"))))
+    if (ipParser.fromString(jv.as<const char *>()))
       gw = static_cast<uint32_t>(ipParser);
     else
       gw = 0;
   }
-  if (server.hasArg(F("mask")))
+  if ((jv = doc[F("mask")]).is<const char *>())
   {
-    if (ipParser.fromString(server.arg(F("mask"))))
+    if (ipParser.fromString(jv.as<const char *>()))
       mask = static_cast<uint32_t>(ipParser);
     else
       mask = 0;
   }
-  if (server.hasArg(F("dns1")))
+  if ((jv = doc[F("dns1")]).is<const char *>())
   {
-    if (ipParser.fromString(server.arg(F("dns1"))))
+    if (ipParser.fromString(jv.as<const char *>()))
       dns1 = static_cast<uint32_t>(ipParser);
     else
       dns1 = 0;
   }
-  if (server.hasArg(F("dns2")))
+  if ((jv = doc[F("dns2")]).is<const char *>())
   {
-    if (ipParser.fromString(server.arg(F("dns2"))))
+    if (ipParser.fromString(jv.as<const char *>()))
       dns2 = static_cast<uint32_t>(ipParser);
     else
       dns2 = 0;
