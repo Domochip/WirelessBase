@@ -97,25 +97,27 @@ void WifiMan::setConfigDefaultValues()
 
 void WifiMan::parseConfigJSON(JsonDocument &doc)
 {
-  if (doc["s"].is<JsonVariant>())
-    strlcpy(ssid, doc["s"], sizeof(ssid));
+  JsonVariant v;
 
-  if (doc["p"].is<JsonVariant>())
-    strlcpy(password, doc["p"], sizeof(password));
+  if ((v = doc["s"]).is<JsonVariant>())
+    strlcpy(ssid, v, sizeof(ssid));
 
-  if (doc["h"].is<JsonVariant>())
-    strlcpy(hostname, doc["h"], sizeof(hostname));
+  if ((v = doc["p"]).is<JsonVariant>())
+    strlcpy(password, v, sizeof(password));
 
-  if (doc["ip"].is<JsonVariant>())
-    ip = doc["ip"];
-  if (doc["gw"].is<JsonVariant>())
-    gw = doc["gw"];
-  if (doc["mask"].is<JsonVariant>())
-    mask = doc["mask"];
-  if (doc["dns1"].is<JsonVariant>())
-    dns1 = doc["dns1"];
-  if (doc["dns2"].is<JsonVariant>())
-    dns2 = doc["dns2"];
+  if ((v = doc["h"]).is<JsonVariant>())
+    strlcpy(hostname, v, sizeof(hostname));
+
+  if ((v = doc["ip"]).is<JsonVariant>())
+    ip = v;
+  if ((v = doc["gw"]).is<JsonVariant>())
+    gw = v;
+  if ((v = doc["mask"]).is<JsonVariant>())
+    mask = v;
+  if ((v = doc["dns1"]).is<JsonVariant>())
+    dns1 = v;
+  if ((v = doc["dns2"]).is<JsonVariant>())
+    dns2 = v;
 }
 
 bool WifiMan::parseConfigWebRequest(WebServer &server)
