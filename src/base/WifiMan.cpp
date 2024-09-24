@@ -99,24 +99,24 @@ void WifiMan::parseConfigJSON(JsonDocument &doc)
 {
   JsonVariant v;
 
-  if ((v = doc["s"]).is<JsonVariant>())
+  if ((v = doc["s"]).is<const char *>())
     strlcpy(ssid, v, sizeof(ssid));
 
-  if ((v = doc["p"]).is<JsonVariant>())
+  if ((v = doc["p"]).is<const char *>())
     strlcpy(password, v, sizeof(password));
 
-  if ((v = doc["h"]).is<JsonVariant>())
+  if ((v = doc["h"]).is<const char *>())
     strlcpy(hostname, v, sizeof(hostname));
 
-  if ((v = doc["ip"]).is<JsonVariant>())
+  if ((v = doc["ip"]).is<uint32_t>())
     ip = v;
-  if ((v = doc["gw"]).is<JsonVariant>())
+  if ((v = doc["gw"]).is<uint32_t>())
     gw = v;
-  if ((v = doc["mask"]).is<JsonVariant>())
+  if ((v = doc["mask"]).is<uint32_t>())
     mask = v;
-  if ((v = doc["dns1"]).is<JsonVariant>())
+  if ((v = doc["dns1"]).is<uint32_t>())
     dns1 = v;
-  if ((v = doc["dns2"]).is<JsonVariant>())
+  if ((v = doc["dns2"]).is<uint32_t>())
     dns2 = v;
 }
 
