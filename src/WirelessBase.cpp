@@ -14,8 +14,11 @@ void MyApplication::setConfigDefaultValues()
 void MyApplication::parseConfigJSON(JsonDocument &doc)
 {
   // TODO
-  // if (doc["prop1"].is<JsonVariant>()) property1 = doc[F("prop1")];
-  // if (doc["prop2"].is<JsonVariant>()) strlcpy(property2, doc["prop2"], sizeof(property2));
+  // JsonVariant jv;
+  // if ((jv = doc["prop1"]).is<uint8_t>())
+  //   property1 = jv.as<uint8_t>();
+  // if ((jv = doc["prop2"]).is<const char *>())
+  //   strlcpy(property2, jv.as<const char *>(), sizeof(property2));
 }
 
 //------------------------------------------
@@ -23,13 +26,31 @@ void MyApplication::parseConfigJSON(JsonDocument &doc)
 bool MyApplication::parseConfigWebRequest(WebServer &server)
 {
   // TODO
-  //  if (!server.hasArg(F("prop1")))
-  //  {
-  //      server.send(400, F("text/html"), F("prop1 missing"));
-  //      return false;
-  //  }
-  // if (server.hasArg(F("prop1"))) property1 = server.arg(F("prop1")).toInt();
-  // if (server.hasArg(F("prop2")) && server.arg(F("prop2")).length() < sizeof(property2)) strcpy(property2, server.arg(F("prop2")).c_str());
+  // config json is received in POST body (arg("plain"))
+
+  // JsonDocument doc;
+  // DeserializationError error = deserializeJson(doc, server.arg("plain"));
+  // if (error)
+  // {
+  //   SERVER_KEEPALIVE_FALSE()
+  //   server.send(400, F("text/html"), F("Invalid JSON"));
+  //   return false;
+  // }
+
+  // // basic control
+  // if (!doc["prop1"].is<JsonVariant>())
+  // {
+  //   SERVER_KEEPALIVE_FALSE()
+  //   server.send(400, F("text/html"), F("prop1 missing"));
+  //   return false;
+  // }
+
+  // // Parse JSON
+  // JsonVariant jv;
+  // if ((jv = doc["prop1"]).is<uint8_t>())
+  //   property1 = jv.as<uint8_t>();
+  // if ((jv = doc["prop2"]).is<const char *>() && strlen(jv.as<const char *>()) < sizeof(property2))
+  //   strcpy(property2, jv.as<const char *>());
 
   return true;
 }
