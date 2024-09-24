@@ -59,7 +59,7 @@ void WifiMan::refreshWiFi()
                             { _needRefreshWifi = true; });
 #else
         _refreshTicker.once<typeof this>(_refreshPeriod * 1000, [](typeof this wifiMan)
-                            { wifiMan->_needRefreshWifi = true; }, this);
+                                         { wifiMan->_needRefreshWifi = true; }, this);
 #endif
       }
     }
