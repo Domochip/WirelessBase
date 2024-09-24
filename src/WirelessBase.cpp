@@ -14,8 +14,8 @@ void MyApplication::setConfigDefaultValues()
 void MyApplication::parseConfigJSON(JsonDocument &doc)
 {
   // TODO
-  // if (!doc["prop1"].isNull()) property1 = doc[F("prop1")];
-  // if (!doc["prop2"].isNull()) strlcpy(property2, doc["prop2"], sizeof(property2));
+  // if (doc["prop1"].is<JsonVariant>()) property1 = doc[F("prop1")];
+  // if (doc["prop2"].is<JsonVariant>()) strlcpy(property2, doc["prop2"], sizeof(property2));
 }
 
 //------------------------------------------

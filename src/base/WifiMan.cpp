@@ -97,24 +97,24 @@ void WifiMan::setConfigDefaultValues()
 
 void WifiMan::parseConfigJSON(JsonDocument &doc)
 {
-  if (!doc["s"].isNull())
+  if (doc["s"].is<JsonVariant>())
     strlcpy(ssid, doc["s"], sizeof(ssid));
 
-  if (!doc["p"].isNull())
+  if (doc["p"].is<JsonVariant>())
     strlcpy(password, doc["p"], sizeof(password));
 
-  if (!doc["h"].isNull())
+  if (doc["h"].is<JsonVariant>())
     strlcpy(hostname, doc["h"], sizeof(hostname));
 
-  if (!doc["ip"].isNull())
+  if (doc["ip"].is<JsonVariant>())
     ip = doc["ip"];
-  if (!doc["gw"].isNull())
+  if (doc["gw"].is<JsonVariant>())
     gw = doc["gw"];
-  if (!doc["mask"].isNull())
+  if (doc["mask"].is<JsonVariant>())
     mask = doc["mask"];
-  if (!doc["dns1"].isNull())
+  if (doc["dns1"].is<JsonVariant>())
     dns1 = doc["dns1"];
-  if (!doc["dns2"].isNull())
+  if (doc["dns2"].is<JsonVariant>())
     dns2 = doc["dns2"];
 }
 
