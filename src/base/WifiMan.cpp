@@ -113,59 +113,42 @@ void WifiMan::parseConfigJSON(JsonDocument &doc, bool fromWebPage = false)
   if ((jv = doc["h"]).is<const char *>() && strlen(jv.as<const char *>()) < sizeof(hostname))
     strcpy(hostname, jv.as<const char *>());
 
-  // if not from web page, then ip config are integers
-  if (!fromWebPage)
+  
+  IPAddress ipParser;
+  if ((jv = doc["ip"]).is<const char *>())
   {
-    if ((jv = doc["ip"]).is<uint32_t>())
-      ip = jv;
-    if ((jv = doc["gw"]).is<uint32_t>())
-      gw = jv;
-    if ((jv = doc["mask"]).is<uint32_t>())
-      mask = jv;
-    if ((jv = doc["dns1"]).is<uint32_t>())
-      dns1 = jv;
-    if ((jv = doc["dns2"]).is<uint32_t>())
-      dns2 = jv;
+    if (ipParser.fromString(jv.as<const char *>()))
+      ip = static_cast<uint32_t>(ipParser);
+    else
+      ip = 0;
   }
-  // otherwise, ip config are strings
-  else
+  if ((jv = doc["gw"]).is<const char *>())
   {
-    IPAddress ipParser;
-    if ((jv = doc["ip"]).is<const char *>())
-    {
-      if (ipParser.fromString(jv.as<const char *>()))
-        ip = static_cast<uint32_t>(ipParser);
-      else
-        ip = 0;
-    }
-    if ((jv = doc["gw"]).is<const char *>())
-    {
-      if (ipParser.fromString(jv.as<const char *>()))
-        gw = static_cast<uint32_t>(ipParser);
-      else
-        gw = 0;
-    }
-    if ((jv = doc["mask"]).is<const char *>())
-    {
-      if (ipParser.fromString(jv.as<const char *>()))
-        mask = static_cast<uint32_t>(ipParser);
-      else
-        mask = 0;
-    }
-    if ((jv = doc["dns1"]).is<const char *>())
-    {
-      if (ipParser.fromString(jv.as<const char *>()))
-        dns1 = static_cast<uint32_t>(ipParser);
-      else
-        dns1 = 0;
-    }
-    if ((jv = doc["dns2"]).is<const char *>())
-    {
-      if (ipParser.fromString(jv.as<const char *>()))
-        dns2 = static_cast<uint32_t>(ipParser);
-      else
-        dns2 = 0;
-    }
+    if (ipParser.fromString(jv.as<const char *>()))
+      gw = static_cast<uint32_t>(ipParser);
+    else
+      gw = 0;
+  }
+  if ((jv = doc["mask"]).is<const char *>())
+  {
+    if (ipParser.fromString(jv.as<const char *>()))
+      mask = static_cast<uint32_t>(ipParser);
+    else
+      mask = 0;
+  }
+  if ((jv = doc["dns1"]).is<const char *>())
+  {
+    if (ipParser.fromString(jv.as<const char *>()))
+      dns1 = static_cast<uint32_t>(ipParser);
+    else
+      dns1 = 0;
+  }
+  if ((jv = doc["dns2"]).is<const char *>())
+  {
+    if (ipParser.fromString(jv.as<const char *>()))
+      dns2 = static_cast<uint32_t>(ipParser);
+    else
+      dns2 = 0;
   }
 }
 
@@ -210,32 +193,22 @@ String WifiMan::generateConfigJSON(bool forSaveFile = false)
     gc = gc + F(",\"p\":\"") + (__FlashStringHelper *)predefPassword + '"';
   gc = gc + F(",\"h\":\"") + hostname + '"';
 
-  if (forSaveFile)
-  {
-    gc = gc + F(",\"ip\":") + ip;
-    gc = gc + F(",\"gw\":") + gw;
-    gc = gc + F(",\"mask\":") + mask;
-    gc = gc + F(",\"dns1\":") + dns1;
-    gc = gc + F(",\"dns2\":") + dns2;
-  }
+
+  gc = gc + F(",\"staticip\":") + (ip ? true : false);
+  if (ip)
+    gc = gc + F(",\"ip\":\"") + IPAddress(ip).toString() + '"';
+  if (gw)
+    gc = gc + F(",\"gw\":\"") + IPAddress(gw).toString() + '"';
   else
-  {
-    gc = gc + F(",\"staticip\":") + (ip ? true : false);
-    if (ip)
-      gc = gc + F(",\"ip\":\"") + IPAddress(ip).toString() + '"';
-    if (gw)
-      gc = gc + F(",\"gw\":\"") + IPAddress(gw).toString() + '"';
-    else
-      gc = gc + F(",\"gw\":\"0.0.0.0\"");
-    if (mask)
-      gc = gc + F(",\"mask\":\"") + IPAddress(mask).toString() + '"';
-    else
-      gc = gc + F(",\"mask\":\"0.0.0.0\"");
-    if (dns1)
-      gc = gc + F(",\"dns1\":\"") + IPAddress(dns1).toString() + '"';
-    if (dns2)
-      gc = gc + F(",\"dns2\":\"") + IPAddress(dns2).toString() + '"';
-  }
+    gc = gc + F(",\"gw\":\"0.0.0.0\"");
+  if (mask)
+    gc = gc + F(",\"mask\":\"") + IPAddress(mask).toString() + '"';
+  else
+    gc = gc + F(",\"mask\":\"0.0.0.0\"");
+  if (dns1)
+    gc = gc + F(",\"dns1\":\"") + IPAddress(dns1).toString() + '"';
+  if (dns2)
+    gc = gc + F(",\"dns2\":\"") + IPAddress(dns2).toString() + '"';
 
   gc = gc + '}';
 
