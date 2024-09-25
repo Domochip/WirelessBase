@@ -420,15 +420,18 @@ void WifiMan::appInitWebServer(WebServer &server, bool &shouldReboot, bool &paus
     }
     else
     {
-      String networksJSON(F("{\"r\":"));
-      networksJSON = networksJSON + n + F(",\"wnl\":[");
+      JsonDocument doc;
+      doc["r"] = n;
+      JsonArray wnl = doc["wnl"].to<JsonArray>();
       for (byte i = 0; i < n; i++)
       {
-        networksJSON = networksJSON + F("{\"SSID\":\"") + WiFi.SSID(i) + F("\",\"RSSI\":") + WiFi.RSSI(i) + F("}");
-        if (i != (n - 1))
-          networksJSON += ',';
+        JsonObject wnl0 = wnl.add<JsonObject>();
+        wnl0["SSID"] = WiFi.SSID(i);
+        wnl0["RSSI"] = WiFi.RSSI(i);
       }
-      networksJSON += F("]}");
+      String networksJSON;
+      serializeJson(doc, networksJSON);
+      
       SERVER_KEEPALIVE_FALSE()
       server.sendHeader(F("Cache-Control"), F("no-cache"));
       server.send(200, F("text/json"), networksJSON);
