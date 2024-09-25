@@ -97,27 +97,76 @@ void WifiMan::setConfigDefaultValues()
 
 void WifiMan::parseConfigJSON(JsonDocument &doc, bool fromWebPage = false)
 {
-  JsonVariant v;
+  JsonVariant jv;
+  char tempPassword[64 + 1] = {0};
 
-  if ((v = doc["s"]).is<const char *>())
-    strlcpy(ssid, v, sizeof(ssid));
+  if ((jv = doc["s"]).is<const char *>() && strlen(jv.as<const char *>()) < sizeof(ssid))
+    strcpy(ssid, jv.as<const char *>());
 
-  if ((v = doc["p"]).is<const char *>())
-    strlcpy(password, v, sizeof(password));
+  if ((jv = doc["p"]).is<const char *>() && strlen(jv.as<const char *>()) < sizeof(tempPassword))
+    strcpy(tempPassword, jv.as<const char *>());
 
-  if ((v = doc["h"]).is<const char *>())
-    strlcpy(hostname, v, sizeof(hostname));
+  // if not from web page or password is not the predefined one
+  if (!fromWebPage || strcmp_P(tempPassword, predefPassword))
+    strcpy(password, tempPassword);
 
-  if ((v = doc["ip"]).is<uint32_t>())
-    ip = v;
-  if ((v = doc["gw"]).is<uint32_t>())
-    gw = v;
-  if ((v = doc["mask"]).is<uint32_t>())
-    mask = v;
-  if ((v = doc["dns1"]).is<uint32_t>())
-    dns1 = v;
-  if ((v = doc["dns2"]).is<uint32_t>())
-    dns2 = v;
+  if ((jv = doc["h"]).is<const char *>() && strlen(jv.as<const char *>()) < sizeof(hostname))
+    strcpy(hostname, jv.as<const char *>());
+
+  // if not from web page, then ip config are integers
+  if (!fromWebPage)
+  {
+    if ((jv = doc["ip"]).is<uint32_t>())
+      ip = jv;
+    if ((jv = doc["gw"]).is<uint32_t>())
+      gw = jv;
+    if ((jv = doc["mask"]).is<uint32_t>())
+      mask = jv;
+    if ((jv = doc["dns1"]).is<uint32_t>())
+      dns1 = jv;
+    if ((jv = doc["dns2"]).is<uint32_t>())
+      dns2 = jv;
+  }
+  // otherwise, ip config are strings
+  else
+  {
+    IPAddress ipParser;
+    if ((jv = doc["ip"]).is<const char *>())
+    {
+      if (ipParser.fromString(jv.as<const char *>()))
+        ip = static_cast<uint32_t>(ipParser);
+      else
+        ip = 0;
+    }
+    if ((jv = doc["gw"]).is<const char *>())
+    {
+      if (ipParser.fromString(jv.as<const char *>()))
+        gw = static_cast<uint32_t>(ipParser);
+      else
+        gw = 0;
+    }
+    if ((jv = doc["mask"]).is<const char *>())
+    {
+      if (ipParser.fromString(jv.as<const char *>()))
+        mask = static_cast<uint32_t>(ipParser);
+      else
+        mask = 0;
+    }
+    if ((jv = doc["dns1"]).is<const char *>())
+    {
+      if (ipParser.fromString(jv.as<const char *>()))
+        dns1 = static_cast<uint32_t>(ipParser);
+      else
+        dns1 = 0;
+    }
+    if ((jv = doc["dns2"]).is<const char *>())
+    {
+      if (ipParser.fromString(jv.as<const char *>()))
+        dns2 = static_cast<uint32_t>(ipParser);
+      else
+        dns2 = 0;
+    }
+  }
 }
 
 bool WifiMan::parseConfigWebRequest(WebServer &server)
@@ -143,57 +192,7 @@ bool WifiMan::parseConfigWebRequest(WebServer &server)
     return false;
   }
 
-  JsonVariant jv;
-  char tempPassword[64 + 1] = {0};
-
-  if ((jv = doc["s"]).is<const char *>() && strlen(jv.as<const char *>()) < sizeof(ssid))
-    strcpy(ssid, jv.as<const char *>());
-
-  if ((jv = doc["p"]).is<const char *>() && strlen(jv.as<const char *>()) < sizeof(tempPassword))
-    strcpy(tempPassword, jv.as<const char *>());
-  if ((jv = doc["h"]).is<const char *>() && strlen(jv.as<const char *>()) < sizeof(hostname))
-    strcpy(hostname, jv.as<const char *>());
-
-  IPAddress ipParser;
-  if ((jv = doc["ip"]).is<const char *>())
-  {
-    if (ipParser.fromString(jv.as<const char *>()))
-      ip = static_cast<uint32_t>(ipParser);
-    else
-      ip = 0;
-  }
-  if ((jv = doc["gw"]).is<const char *>())
-  {
-    if (ipParser.fromString(jv.as<const char *>()))
-      gw = static_cast<uint32_t>(ipParser);
-    else
-      gw = 0;
-  }
-  if ((jv = doc["mask"]).is<const char *>())
-  {
-    if (ipParser.fromString(jv.as<const char *>()))
-      mask = static_cast<uint32_t>(ipParser);
-    else
-      mask = 0;
-  }
-  if ((jv = doc["dns1"]).is<const char *>())
-  {
-    if (ipParser.fromString(jv.as<const char *>()))
-      dns1 = static_cast<uint32_t>(ipParser);
-    else
-      dns1 = 0;
-  }
-  if ((jv = doc["dns2"]).is<const char *>())
-  {
-    if (ipParser.fromString(jv.as<const char *>()))
-      dns2 = static_cast<uint32_t>(ipParser);
-    else
-      dns2 = 0;
-  }
-
-  // check for previous password ssid (there is a predefined special password that mean to keep already saved one)
-  if (strcmp_P(tempPassword, predefPassword))
-    strcpy(password, tempPassword);
+  parseConfigJSON(doc, true);
 
   return true;
 }
