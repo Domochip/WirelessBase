@@ -17,8 +17,8 @@ void MyApplication::parseConfigJSON(JsonDocument &doc, bool fromWebPage = false)
   // JsonVariant jv;
   // if ((jv = doc["prop1"]).is<uint8_t>())
   //   property1 = jv.as<uint8_t>();
-  // if ((jv = doc["prop2"]).is<const char *>())
-  //   strlcpy(property2, jv.as<const char *>(), sizeof(property2));
+  // if ((jv = doc["prop2"]).is<const char *>() && strlen(jv.as<const char *>()) < sizeof(property2))
+  //   strcpy(property2, jv.as<const char *>());
 }
 
 //------------------------------------------
@@ -45,12 +45,7 @@ bool MyApplication::parseConfigWebRequest(WebServer &server)
   //   return false;
   // }
 
-  // // Parse JSON
-  // JsonVariant jv;
-  // if ((jv = doc["prop1"]).is<uint8_t>())
-  //   property1 = jv.as<uint8_t>();
-  // if ((jv = doc["prop2"]).is<const char *>() && strlen(jv.as<const char *>()) < sizeof(property2))
-  //   strcpy(property2, jv.as<const char *>());
+  // parseConfigJSON(doc, true);
 
   return true;
 }
