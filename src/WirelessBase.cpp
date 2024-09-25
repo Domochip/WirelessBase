@@ -11,7 +11,7 @@ void MyApplication::setConfigDefaultValues()
 
 //------------------------------------------
 // Parse JSON object into configuration properties
-void MyApplication::parseConfigJSON(JsonDocument &doc)
+void MyApplication::parseConfigJSON(JsonDocument &doc, bool fromWebPage = false)
 {
   // TODO
   // JsonVariant jv;

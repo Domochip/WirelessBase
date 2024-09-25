@@ -10,7 +10,7 @@
 #include "data/side-menu.js.gz.h"
 
 void Core::setConfigDefaultValues(){};
-void Core::parseConfigJSON(JsonDocument &doc){};
+void Core::parseConfigJSON(JsonDocument &doc, bool fromWebPage = false){};
 bool Core::parseConfigWebRequest(WebServer &server) { return true; };
 String Core::generateConfigJSON(bool clearPassword = false) { return String(); };
 String Core::generateStatusJSON()

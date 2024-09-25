@@ -95,7 +95,7 @@ void WifiMan::setConfigDefaultValues()
   dns2 = 0;
 }
 
-void WifiMan::parseConfigJSON(JsonDocument &doc)
+void WifiMan::parseConfigJSON(JsonDocument &doc, bool fromWebPage = false)
 {
   JsonVariant v;
 
