@@ -171,33 +171,36 @@ bool WifiMan::parseConfigWebRequest(WebServer &server)
 String WifiMan::generateConfigJSON(bool forSaveFile = false)
 {
 
-  String gc('{');
-  gc = gc + F("\"s\":\"") + ssid + '"';
+  JsonDocument doc;
+
+  doc["s"] = ssid;
 
   if (forSaveFile)
-    gc = gc + F(",\"p\":\"") + password + '"';
+    doc["p"] = password;
   else
     // there is a predefined special password (mean to keep already saved one)
-    gc = gc + F(",\"p\":\"") + (__FlashStringHelper *)predefPassword + '"';
-  gc = gc + F(",\"h\":\"") + hostname + '"';
+    doc["p"] = (const __FlashStringHelper *)predefPassword;
 
-  gc = gc + F(",\"staticip\":") + (ip ? 1 : 0);
+  doc["h"] = hostname;
+
+  doc["staticip"] = (ip ? 1 : 0);
   if (ip)
-    gc = gc + F(",\"ip\":\"") + IPAddress(ip).toString() + '"';
+    doc["ip"] = IPAddress(ip).toString();
   if (gw)
-    gc = gc + F(",\"gw\":\"") + IPAddress(gw).toString() + '"';
+    doc["gw"] = IPAddress(gw).toString();
   else
-    gc = gc + F(",\"gw\":\"0.0.0.0\"");
+    doc["gw"] = F("0.0.0.0");
   if (mask)
-    gc = gc + F(",\"mask\":\"") + IPAddress(mask).toString() + '"';
+    doc["mask"] = IPAddress(mask).toString();
   else
-    gc = gc + F(",\"mask\":\"0.0.0.0\"");
+    doc["mask"] = F("0.0.0.0");
   if (dns1)
-    gc = gc + F(",\"dns1\":\"") + IPAddress(dns1).toString() + '"';
+    doc["dns1"] = IPAddress(dns1).toString();
   if (dns2)
-    gc = gc + F(",\"dns2\":\"") + IPAddress(dns2).toString() + '"';
+    doc["dns2"] = IPAddress(dns2).toString();
 
-  gc = gc + '}';
+  String gc;
+  serializeJson(doc, gc);
 
   return gc;
 }
@@ -205,24 +208,26 @@ String WifiMan::generateConfigJSON(bool forSaveFile = false)
 String WifiMan::generateStatusJSON()
 {
 
-  String gs('{');
+  JsonDocument doc;
+
   if ((WiFi.getMode() & WIFI_AP))
   {
-    gs = gs + F("\"ap\":\"on\"");
-    gs = gs + F(",\"ai\":\"") + WiFi.softAPIP().toString().c_str() + '"';
+    doc["ap"] = F("on");
+    doc["ai"] = WiFi.softAPIP().toString();
   }
   else
   {
-    gs = gs + F("\"ap\":\"off\"");
-    gs = gs + F(",\"ai\":\"-\"");
+    doc["ap"] = F("off");
+    doc["ai"] = "-";
   }
 
-  gs = gs + F(",\"sta\":\"") + (ssid[0] ? F("on") : F("off")) + '"';
-  gs = gs + F(",\"stai\":\"") + (ssid[0] ? (WiFi.isConnected() ? ((WiFi.localIP().toString() + ' ' + (ip ? F("Static IP") : F("DHCP"))).c_str()) : "Not Connected") : "-") + '"';
+  doc["sta"] = (ssid[0] ? F("on") : F("off"));
+  doc["stai"] = String(ssid[0] ? (WiFi.isConnected() ? (WiFi.localIP().toString() + ' ' + (ip ? F("Static IP") : F("DHCP"))).c_str() : "Not Connected") : "-");
 
-  gs = gs + F(",\"mac\":\"") + WiFi.macAddress() + '"';
+  doc["mac"] = WiFi.macAddress();
 
-  gs = gs + '}';
+  String gs;
+  serializeJson(doc, gs);
 
   return gs;
 }
