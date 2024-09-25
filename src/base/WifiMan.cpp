@@ -113,43 +113,31 @@ void WifiMan::parseConfigJSON(JsonDocument &doc, bool fromWebPage = false)
   if ((jv = doc["h"]).is<const char *>() && strlen(jv.as<const char *>()) < sizeof(hostname))
     strcpy(hostname, jv.as<const char *>());
 
-  
   IPAddress ipParser;
-  if ((jv = doc["ip"]).is<const char *>())
-  {
-    if (ipParser.fromString(jv.as<const char *>()))
-      ip = static_cast<uint32_t>(ipParser);
-    else
-      ip = 0;
-  }
-  if ((jv = doc["gw"]).is<const char *>())
-  {
-    if (ipParser.fromString(jv.as<const char *>()))
-      gw = static_cast<uint32_t>(ipParser);
-    else
-      gw = 0;
-  }
-  if ((jv = doc["mask"]).is<const char *>())
-  {
-    if (ipParser.fromString(jv.as<const char *>()))
-      mask = static_cast<uint32_t>(ipParser);
-    else
-      mask = 0;
-  }
-  if ((jv = doc["dns1"]).is<const char *>())
-  {
-    if (ipParser.fromString(jv.as<const char *>()))
-      dns1 = static_cast<uint32_t>(ipParser);
-    else
-      dns1 = 0;
-  }
-  if ((jv = doc["dns2"]).is<const char *>())
-  {
-    if (ipParser.fromString(jv.as<const char *>()))
-      dns2 = static_cast<uint32_t>(ipParser);
-    else
-      dns2 = 0;
-  }
+  if ((jv = doc["ip"]).is<const char *>() && ipParser.fromString(jv.as<const char *>()))
+    ip = static_cast<uint32_t>(ipParser);
+  else
+    ip = 0;
+
+  if ((jv = doc["gw"]).is<const char *>() && ipParser.fromString(jv.as<const char *>()))
+    gw = static_cast<uint32_t>(ipParser);
+  else
+    gw = 0;
+
+  if ((jv = doc["mask"]).is<const char *>() && ipParser.fromString(jv.as<const char *>()))
+    mask = static_cast<uint32_t>(ipParser);
+  else
+    mask = 0;
+
+  if ((jv = doc["dns1"]).is<const char *>() && ipParser.fromString(jv.as<const char *>()))
+    dns1 = static_cast<uint32_t>(ipParser);
+  else
+    dns1 = 0;
+
+  if ((jv = doc["dns2"]).is<const char *>() && ipParser.fromString(jv.as<const char *>()))
+    dns2 = static_cast<uint32_t>(ipParser);
+  else
+    dns2 = 0;
 }
 
 bool WifiMan::parseConfigWebRequest(WebServer &server)
@@ -193,8 +181,7 @@ String WifiMan::generateConfigJSON(bool forSaveFile = false)
     gc = gc + F(",\"p\":\"") + (__FlashStringHelper *)predefPassword + '"';
   gc = gc + F(",\"h\":\"") + hostname + '"';
 
-
-  gc = gc + F(",\"staticip\":") + (ip ? true : false);
+  gc = gc + F(",\"staticip\":") + (ip ? 1 : 0);
   if (ip)
     gc = gc + F(",\"ip\":\"") + IPAddress(ip).toString() + '"';
   if (gw)
