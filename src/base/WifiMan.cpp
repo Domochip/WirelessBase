@@ -100,18 +100,18 @@ void WifiMan::parseConfigJSON(JsonDocument &doc, bool fromWebPage = false)
   JsonVariant jv;
   char tempPassword[64 + 1] = {0};
 
-  if ((jv = doc["s"]).is<const char *>() && strlen(jv.as<const char *>()) < sizeof(ssid))
-    strcpy(ssid, jv.as<const char *>());
+  if ((jv = doc["s"]).is<const char *>() && strlen(jv) < sizeof(ssid))
+    strcpy(ssid, jv);
 
-  if ((jv = doc["p"]).is<const char *>() && strlen(jv.as<const char *>()) < sizeof(tempPassword))
-    strcpy(tempPassword, jv.as<const char *>());
+  if ((jv = doc["p"]).is<const char *>() && strlen(jv) < sizeof(tempPassword))
+    strcpy(tempPassword, jv);
 
   // if not from web page or password is not the predefined one
   if (!fromWebPage || strcmp_P(tempPassword, predefPassword))
     strcpy(password, tempPassword);
 
-  if ((jv = doc["h"]).is<const char *>() && strlen(jv.as<const char *>()) < sizeof(hostname))
-    strcpy(hostname, jv.as<const char *>());
+  if ((jv = doc["h"]).is<const char *>() && strlen(jv) < sizeof(hostname))
+    strcpy(hostname, jv);
 
   IPAddress ipParser;
   if ((jv = doc["ip"]).is<const char *>() && ipParser.fromString(jv.as<const char *>()))
