@@ -54,12 +54,14 @@ bool MyApplication::parseConfigWebRequest(WebServer &server)
 // Generate JSON from configuration properties
 String MyApplication::generateConfigJSON(bool forSaveFile = false)
 {
-  String gc('{');
-  // TODO
-  //  gc = gc + F("\"p1\":") + (property1 ? true : false);
-  //  gc = gc + F("\"p2\":\"") + property2 + '"';
+  JsonDocument doc;
 
-  gc += '}';
+  // TODO
+  // doc["p1"] = property1;
+  // doc["p2"] = property2;
+
+  String gc;
+  serializeJson(doc, gc);
 
   return gc;
 }
@@ -68,13 +70,14 @@ String MyApplication::generateConfigJSON(bool forSaveFile = false)
 // Generate JSON of application status
 String MyApplication::generateStatusJSON()
 {
-  String gs('{');
+  JsonDocument doc;
 
   // TODO
-  //  gs = gs + F("\"p1\":") + (property1 ? true : false);
-  //  gs = gs + F(",\"p2\":\"") + property2 + '"';
+  // doc["p1"] = property1;
+  // doc["p2"] = property2;
 
-  gs += '}';
+  String gs;
+  serializeJson(doc, gs);
 
   return gs;
 }
