@@ -172,25 +172,6 @@ bool WifiMan::parseConfigWebRequest(WebServer &server)
     return false;
   }
 
-  // all values should be string
-  for (JsonPair kv : doc.as<JsonObject>())
-  {
-    if (!doc[kv.key()].is<const char *>())
-    {
-      SERVER_KEEPALIVE_FALSE()
-      server.send(400, F("text/html"), F("Invalid JSON content"));
-      return false;
-    }
-  }
-
-  // basic control
-  if (!doc["s"].is<JsonVariant>())
-  {
-    SERVER_KEEPALIVE_FALSE()
-    server.send(400, F("text/html"), F("SSID is missing"));
-    return false;
-  }
-
   parseConfigJSON(doc, true);
 
   return true;
