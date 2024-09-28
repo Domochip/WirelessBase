@@ -117,34 +117,44 @@ void WifiMan::parseConfigJSON(JsonDocument &doc, bool fromWebPage = false)
 
   IPAddress ipParser;
   if ((jv = doc["ip"]).is<const char *>())
+  {
     if (ipParser.fromString(jv.as<const char *>()))
       ip = static_cast<uint32_t>(ipParser);
     else
       ip = 0;
+  }
 
   if ((jv = doc["gw"]).is<const char *>())
+  {
     if (ipParser.fromString(jv.as<const char *>()))
       gw = static_cast<uint32_t>(ipParser);
     else
       gw = 0;
+  }
 
   if ((jv = doc["mask"]).is<const char *>())
+  {
     if (ipParser.fromString(jv.as<const char *>()))
       mask = static_cast<uint32_t>(ipParser);
     else
       mask = 0;
+  }
 
   if ((jv = doc["dns1"]).is<const char *>())
+  {
     if (ipParser.fromString(jv.as<const char *>()))
       dns1 = static_cast<uint32_t>(ipParser);
     else
       dns1 = 0;
+  }
 
   if ((jv = doc["dns2"]).is<const char *>())
+  {
     if (ipParser.fromString(jv.as<const char *>()))
       dns2 = static_cast<uint32_t>(ipParser);
     else
       dns2 = 0;
+  }
 }
 
 bool WifiMan::parseConfigWebRequest(WebServer &server)
