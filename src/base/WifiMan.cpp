@@ -170,7 +170,6 @@ bool WifiMan::parseConfigWebRequest(WebServer &server)
 
 String WifiMan::generateConfigJSON(bool forSaveFile = false)
 {
-
   JsonDocument doc;
 
   doc["s"] = ssid;
@@ -207,7 +206,6 @@ String WifiMan::generateConfigJSON(bool forSaveFile = false)
 
 String WifiMan::generateStatusJSON()
 {
-
   JsonDocument doc;
 
   if ((WiFi.getMode() & WIFI_AP))
