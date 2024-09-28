@@ -238,23 +238,12 @@ bool WifiMan::appInit(bool reInit = false)
   {
     // build "unique" AP name (DEFAULT_AP_SSID + 4 last digit of ChipId)
     _apSsid[0] = 0;
-    strcpy(_apSsid, DEFAULT_AP_SSID);
-#ifdef ESP8266
-    uint16_t id = ESP.getChipId() & 0xFFFF;
-#else
-    uint16_t id = (uint32_t)(ESP.getEfuseMac() << 40 >> 40);
-#endif
 
-    byte endOfSsid = strlen(_apSsid);
-    byte num = (id & 0xF000) / 0x1000;
-    _apSsid[endOfSsid] = num + ((num <= 9) ? 0x30 : 0x37);
-    num = (id & 0xF00) / 0x100;
-    _apSsid[endOfSsid + 1] = num + ((num <= 9) ? 0x30 : 0x37);
-    num = (id & 0xF0) / 0x10;
-    _apSsid[endOfSsid + 2] = num + ((num <= 9) ? 0x30 : 0x37);
-    num = id & 0xF;
-    _apSsid[endOfSsid + 3] = num + ((num <= 9) ? 0x30 : 0x37);
-    _apSsid[endOfSsid + 4] = 0;
+#ifdef ESP8266
+    sprintf_P(_apSsid, PSTR("%s%04X"), DEFAULT_AP_SSID, ESP.getChipId() & 0xFFFF);
+#else
+    sprintf_P(_apSsid, PSTR("%s%04X"), DEFAULT_AP_SSID, (uint32_t)(ESP.getEfuseMac() << 40 >> 40));
+#endif
   }
 
   // make changes saved to flash
