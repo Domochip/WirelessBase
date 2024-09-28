@@ -404,18 +404,18 @@ void WifiMan::appInitWebServer(WebServer &server, bool &shouldReboot, bool &paus
 
   server.on("/wnl", HTTP_GET, [this, &server]()
             {
+    // prepare response
+    SERVER_KEEPALIVE_FALSE()
+    server.sendHeader(F("Cache-Control"), F("no-cache"));
+
     int8_t n = WiFi.scanComplete();
     if (n == -2)
     {
-      SERVER_KEEPALIVE_FALSE()
-      server.sendHeader(F("Cache-Control"), F("no-cache"));
       server.send(200, F("text/json"), F("{\"r\":-2,\"wnl\":[]}"));
       WiFi.scanNetworks(true);
     }
     else if (n == -1)
     {
-      SERVER_KEEPALIVE_FALSE()
-      server.sendHeader(F("Cache-Control"), F("no-cache"));
       server.send(200, F("text/json"), F("{\"r\":-1,\"wnl\":[]}"));
     }
     else
@@ -431,9 +431,7 @@ void WifiMan::appInitWebServer(WebServer &server, bool &shouldReboot, bool &paus
       }
       String networksJSON;
       serializeJson(doc, networksJSON);
-      
-      SERVER_KEEPALIVE_FALSE()
-      server.sendHeader(F("Cache-Control"), F("no-cache"));
+
       server.send(200, F("text/json"), networksJSON);
       WiFi.scanDelete();
     } });
