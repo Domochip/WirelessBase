@@ -100,44 +100,51 @@ void WifiMan::parseConfigJSON(JsonDocument &doc, bool fromWebPage = false)
   JsonVariant jv;
   char tempPassword[64 + 1] = {0};
 
-  if ((jv = doc["s"]).is<const char *>() && strlen(jv) < sizeof(ssid))
-    strcpy(ssid, jv);
+  if ((jv = doc["s"]).is<const char *>())
+    strlcpy(ssid, jv, sizeof(ssid));
 
-  if ((jv = doc["p"]).is<const char *>() && strlen(jv) < sizeof(tempPassword))
-    strcpy(tempPassword, jv);
+  if ((jv = doc["p"]).is<const char *>())
+  {
+    strlcpy(tempPassword, jv, sizeof(tempPassword));
 
-  // if not from web page or password is not the predefined one
-  if (!fromWebPage || strcmp_P(tempPassword, predefPassword))
-    strcpy(password, tempPassword);
+    // if not from web page or password is not the predefined one
+    if (!fromWebPage || strcmp_P(tempPassword, predefPassword))
+      strcpy(password, tempPassword);
+  }
 
-  if ((jv = doc["h"]).is<const char *>() && strlen(jv) < sizeof(hostname))
-    strcpy(hostname, jv);
+  if ((jv = doc["h"]).is<const char *>())
+    strlcpy(hostname, jv, sizeof(hostname));
 
   IPAddress ipParser;
-  if ((jv = doc["ip"]).is<const char *>() && ipParser.fromString(jv.as<const char *>()))
-    ip = static_cast<uint32_t>(ipParser);
-  else
-    ip = 0;
+  if ((jv = doc["ip"]).is<const char *>())
+    if (ipParser.fromString(jv.as<const char *>()))
+      ip = static_cast<uint32_t>(ipParser);
+    else
+      ip = 0;
 
-  if ((jv = doc["gw"]).is<const char *>() && ipParser.fromString(jv.as<const char *>()))
-    gw = static_cast<uint32_t>(ipParser);
-  else
-    gw = 0;
+  if ((jv = doc["gw"]).is<const char *>())
+    if (ipParser.fromString(jv.as<const char *>()))
+      gw = static_cast<uint32_t>(ipParser);
+    else
+      gw = 0;
 
-  if ((jv = doc["mask"]).is<const char *>() && ipParser.fromString(jv.as<const char *>()))
-    mask = static_cast<uint32_t>(ipParser);
-  else
-    mask = 0;
+  if ((jv = doc["mask"]).is<const char *>())
+    if (ipParser.fromString(jv.as<const char *>()))
+      mask = static_cast<uint32_t>(ipParser);
+    else
+      mask = 0;
 
-  if ((jv = doc["dns1"]).is<const char *>() && ipParser.fromString(jv.as<const char *>()))
-    dns1 = static_cast<uint32_t>(ipParser);
-  else
-    dns1 = 0;
+  if ((jv = doc["dns1"]).is<const char *>())
+    if (ipParser.fromString(jv.as<const char *>()))
+      dns1 = static_cast<uint32_t>(ipParser);
+    else
+      dns1 = 0;
 
-  if ((jv = doc["dns2"]).is<const char *>() && ipParser.fromString(jv.as<const char *>()))
-    dns2 = static_cast<uint32_t>(ipParser);
-  else
-    dns2 = 0;
+  if ((jv = doc["dns2"]).is<const char *>())
+    if (ipParser.fromString(jv.as<const char *>()))
+      dns2 = static_cast<uint32_t>(ipParser);
+    else
+      dns2 = 0;
 }
 
 bool WifiMan::parseConfigWebRequest(WebServer &server)
@@ -151,15 +158,26 @@ bool WifiMan::parseConfigWebRequest(WebServer &server)
   if (error)
   {
     SERVER_KEEPALIVE_FALSE()
-    server.send(400, F("text/html"), F("Invalid JSON"));
+    server.send(400, F("text/html"), F("Malformed JSON"));
     return false;
   }
 
+  // all values should be string
+  for (JsonPair kv : doc.as<JsonObject>())
+  {
+    if (!doc[kv.key()].is<const char *>())
+    {
+      SERVER_KEEPALIVE_FALSE()
+      server.send(400, F("text/html"), F("Invalid JSON content"));
+      return false;
+    }
+  }
+
   // basic control
-  if (!doc["s"].is<const char *>())
+  if (!doc["s"].is<JsonVariant>())
   {
     SERVER_KEEPALIVE_FALSE()
-    server.send(400, F("text/html"), F("SSID missing"));
+    server.send(400, F("text/html"), F("SSID is missing"));
     return false;
   }
 
