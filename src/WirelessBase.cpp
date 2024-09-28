@@ -13,12 +13,23 @@ void MyApplication::setConfigDefaultValues()
 // Parse JSON object into configuration properties
 void MyApplication::parseConfigJSON(JsonDocument &doc, bool fromWebPage = false)
 {
+  // Be carefull about the type of the properties
+  // when Json is coming from web page (fromWebPage = true), all properties are string
+  // when Json is coming from savefile, property types are defined by the generateConfigJSON
+
   // TODO
   // JsonVariant jv;
-  // if ((jv = doc["prop1"]).is<uint8_t>())
-  //   property1 = jv.as<uint8_t>();
-  // if ((jv = doc["prop2"]).is<const char *>() && strlen(jv.as<const char *>()) < sizeof(property2))
-  //   strcpy(property2, jv.as<const char *>());
+
+  // example for numeric value
+  // if ((jv = doc["prop1"]).is<JsonVariant>()) // check if property is present
+  //   property1 = jv; // if the property is a string, it will be automatically converted to a number (be carefull default value if conversion fail is 0)
+
+  // example for string value
+  // if ((jv = doc["prop2"]).is<const char *>()) // do a more precise check about the type otherwise strlcpy will crash
+  //   strlcpy(property2, jv, sizeof(property2));
+
+  // example for boolean value
+  // property3 = jv; // html checkbox will send "on" string or no json property so direct conversion fit the need
 }
 
 //------------------------------------------
