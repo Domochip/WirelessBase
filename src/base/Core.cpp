@@ -1,6 +1,5 @@
 #include "Core.h"
 #include <EEPROM.h>
-// #include <SPIFFSEditor.h>
 #include "../Main.h" //for VERSION define
 #include "Version.h" //for BASE_VERSION define
 
