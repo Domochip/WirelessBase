@@ -119,8 +119,7 @@ bool Application::loadConfig()
     }
     else
     { // otherwise pass it to application
-      parseConfigJSON(jsonDoc);
-      result = true;
+      result = parseConfigJSON(jsonDoc);
     }
     configFile.close();
   }
