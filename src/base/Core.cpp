@@ -10,7 +10,6 @@
 
 void Core::setConfigDefaultValues() {};
 bool Core::parseConfigJSON(JsonDocument &doc, bool fromWebPage = false) { return true; };
-bool Core::parseConfigWebRequest(WebServer &server) { return true; };
 String Core::generateConfigJSON(bool clearPassword = false) { return String(); };
 String Core::generateStatusJSON()
 {

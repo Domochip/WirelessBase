@@ -17,7 +17,6 @@ class Core : public Application
 private:
   void setConfigDefaultValues();
   bool parseConfigJSON(JsonDocument &doc, bool fromWebPage);
-  bool parseConfigWebRequest(WebServer &server);
   String generateConfigJSON(bool clearPassword);
   String generateStatusJSON();
   bool appInit(bool reInit);

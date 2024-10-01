@@ -159,26 +159,6 @@ bool WifiMan::parseConfigJSON(JsonDocument &doc, bool fromWebPage = false)
   return true;
 }
 
-bool WifiMan::parseConfigWebRequest(WebServer &server)
-{
-  // config json is received in POST body (arg("plain"))
-
-  // parse JSON
-  JsonDocument doc;
-  DeserializationError error = deserializeJson(doc, server.arg("plain"));
-
-  if (error)
-  {
-    SERVER_KEEPALIVE_FALSE()
-    server.send(400, F("text/html"), F("Malformed JSON"));
-    return false;
-  }
-
-  parseConfigJSON(doc, true);
-
-  return true;
-}
-
 String WifiMan::generateConfigJSON(bool forSaveFile = false)
 {
   JsonDocument doc;

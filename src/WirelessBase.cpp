@@ -35,35 +35,6 @@ bool MyApplication::parseConfigJSON(JsonDocument &doc, bool fromWebPage = false)
 }
 
 //------------------------------------------
-// Parse HTTP POST parameters in request into configuration properties
-bool MyApplication::parseConfigWebRequest(WebServer &server)
-{
-  // TODO
-  // config json is received in POST body (arg("plain"))
-
-  // JsonDocument doc;
-  // DeserializationError error = deserializeJson(doc, server.arg("plain"));
-  // if (error)
-  // {
-  //   SERVER_KEEPALIVE_FALSE()
-  //   server.send(400, F("text/html"), F("Invalid JSON"));
-  //   return false;
-  // }
-
-  // // basic control
-  // if (!doc["prop1"].is<JsonVariant>())
-  // {
-  //   SERVER_KEEPALIVE_FALSE()
-  //   server.send(400, F("text/html"), F("prop1 missing"));
-  //   return false;
-  // }
-
-  // parseConfigJSON(doc, true);
-
-  return true;
-}
-
-//------------------------------------------
 // Generate JSON from configuration properties
 String MyApplication::generateConfigJSON(bool forSaveFile = false)
 {
