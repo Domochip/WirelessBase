@@ -11,7 +11,7 @@ void MyApplication::setConfigDefaultValues()
 
 //------------------------------------------
 // Parse JSON object into configuration properties
-void MyApplication::parseConfigJSON(JsonDocument &doc, bool fromWebPage = false)
+bool MyApplication::parseConfigJSON(JsonDocument &doc, bool fromWebPage = false)
 {
   // Be carefull about the type of the properties
   // when Json is coming from web page (fromWebPage = true), all properties are string
@@ -30,6 +30,8 @@ void MyApplication::parseConfigJSON(JsonDocument &doc, bool fromWebPage = false)
 
   // example for boolean value
   // property3 = jv; // html checkbox will send "on" string or no json property so direct conversion fit the need
+
+  return true;
 }
 
 //------------------------------------------

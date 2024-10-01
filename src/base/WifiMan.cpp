@@ -95,7 +95,7 @@ void WifiMan::setConfigDefaultValues()
   dns2 = 0;
 }
 
-void WifiMan::parseConfigJSON(JsonDocument &doc, bool fromWebPage = false)
+bool WifiMan::parseConfigJSON(JsonDocument &doc, bool fromWebPage = false)
 {
   JsonVariant jv;
   char tempPassword[64 + 1] = {0};
@@ -155,6 +155,8 @@ void WifiMan::parseConfigJSON(JsonDocument &doc, bool fromWebPage = false)
     else
       dns2 = 0;
   }
+
+  return true;
 }
 
 bool WifiMan::parseConfigWebRequest(WebServer &server)

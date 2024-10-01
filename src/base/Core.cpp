@@ -8,8 +8,8 @@
 #include "data/side-menu.css.gz.h"
 #include "data/side-menu.js.gz.h"
 
-void Core::setConfigDefaultValues(){};
-void Core::parseConfigJSON(JsonDocument &doc, bool fromWebPage = false){};
+void Core::setConfigDefaultValues() {};
+bool Core::parseConfigJSON(JsonDocument &doc, bool fromWebPage = false) { return true; };
 bool Core::parseConfigWebRequest(WebServer &server) { return true; };
 String Core::generateConfigJSON(bool clearPassword = false) { return String(); };
 String Core::generateStatusJSON()
