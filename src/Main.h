@@ -12,7 +12,7 @@
 #define APPLICATION1_DESC "DomoChip Wireless Base"
 #define APPLICATION1_CLASS MyApplication
 
-#define VERSION_NUMBER "3.X"
+#define VERSION_NUMBER "3.0.0"
 
 #define DEFAULT_AP_SSID "WirelessBase"
 #define DEFAULT_AP_PSK "PasswordBase"
