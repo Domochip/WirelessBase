@@ -48,12 +48,6 @@ const PROGMEM char *Core::getHTMLContent(WebPageForPlaceHolder wp)
   case config:
     return config0htmlgz;
     break;
-  case fw:
-    return fwhtmlgz;
-    break;
-  case discover:
-    return discoverhtmlgz;
-    break;
   };
   return nullptr;
 }
@@ -66,12 +60,6 @@ size_t Core::getHTMLContentSize(WebPageForPlaceHolder wp)
     break;
   case config:
     return sizeof(config0htmlgz);
-    break;
-  case fw:
-    return sizeof(fwhtmlgz);
-    break;
-  case discover:
-    return sizeof(discoverhtmlgz);
     break;
   };
   return 0;
@@ -125,14 +113,14 @@ void Core::appInitWebServer(WebServer &server, bool &shouldReboot, bool &pauseAp
             {
     SERVER_KEEPALIVE_FALSE()
     server.sendHeader(F("Content-Encoding"), F("gzip"));
-    server.send_P(200, PSTR("text/html"), getHTMLContent(fw), getHTMLContentSize(fw)); });
+    server.send_P(200, PSTR("text/html"), fwhtmlgz, sizeof(fwhtmlgz)); });
 
   // HTML discover handler
   server.on("/discover.html", HTTP_GET, [this, &server]()
             {
     SERVER_KEEPALIVE_FALSE()
     server.sendHeader(F("Content-Encoding"), F("gzip"));
-    server.send_P(200, PSTR("text/html"), getHTMLContent(discover), getHTMLContentSize(discover)); });
+    server.send_P(200, PSTR("text/html"), discoverhtmlgz, sizeof(discoverhtmlgz)); });
 
   // FirmWare POST URL allows to push new firmware
   server.on(

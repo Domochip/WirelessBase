@@ -20,9 +20,7 @@ protected:
   typedef enum
   {
     status,
-    config,
-    fw,
-    discover
+    config
   } WebPageForPlaceHolder;
 
   char _appId;
