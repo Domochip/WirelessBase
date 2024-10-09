@@ -120,6 +120,20 @@ void Core::appInitWebServer(WebServer &server, bool &shouldReboot, bool &pauseAp
     server.sendHeader(F("Cache-Control"), F("no-cache"));
     server.send(200, "text/json", discoJSON); });
 
+  // HTML fw handler
+  server.on("/fw.html", HTTP_GET, [this, &server]()
+            {
+    SERVER_KEEPALIVE_FALSE()
+    server.sendHeader(F("Content-Encoding"), F("gzip"));
+    server.send_P(200, PSTR("text/html"), getHTMLContent(fw), getHTMLContentSize(fw)); });
+
+  // HTML discover handler
+  server.on("/discover.html", HTTP_GET, [this, &server]()
+            {
+    SERVER_KEEPALIVE_FALSE()
+    server.sendHeader(F("Content-Encoding"), F("gzip"));
+    server.send_P(200, PSTR("text/html"), getHTMLContent(discover), getHTMLContentSize(discover)); });
+
   // FirmWare POST URL allows to push new firmware
   server.on(
       "/fw", HTTP_POST, [&shouldReboot, &pauseApplication, &server]()
