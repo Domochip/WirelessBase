@@ -49,10 +49,10 @@ const PROGMEM char *Core::getHTMLContent(WebPageForPlaceHolder wp)
     return config0htmlgz;
     break;
   case fw:
-    return fw0htmlgz;
+    return fwhtmlgz;
     break;
   case discover:
-    return discover0htmlgz;
+    return discoverhtmlgz;
     break;
   };
   return nullptr;
@@ -68,10 +68,10 @@ size_t Core::getHTMLContentSize(WebPageForPlaceHolder wp)
     return sizeof(config0htmlgz);
     break;
   case fw:
-    return sizeof(fw0htmlgz);
+    return sizeof(fwhtmlgz);
     break;
   case discover:
-    return sizeof(discover0htmlgz);
+    return sizeof(discoverhtmlgz);
     break;
   };
   return 0;
