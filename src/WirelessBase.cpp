@@ -119,13 +119,15 @@ void MyApplication::appInitWebServer(WebServer &server, bool &shouldReboot, bool
 {
   // TODO
   // server.on("/getColor", HTTP_GET, [this, &server]() {server.send(200, F("text/html"), GetColor());});
+
+  // register EventSource
+  _eventSourceMan.initEventSourceServer(_appId, server);
 }
 
 //------------------------------------------
 // Run for timer
 void MyApplication::appRun()
 {
-#if ENABLE_STATUS_EVTSRC
   // last time status event source was sent
   static unsigned long lastEvtSrcSentMillis;
 
@@ -133,10 +135,9 @@ void MyApplication::appRun()
 
   if (currentMillis - lastEvtSrcSentMillis >= 10000)
   {                                                         // Check if it's time to send a new event
-    statusEventSourceBroadcast(F("{\"Hello\":\"World\"}")); // Send a message to all connected clients
+    _eventSourceMan.eventSourceBroadcast(F("{\"Hello\":\"World\"}")); // Send a message to all connected clients
     lastEvtSrcSentMillis = currentMillis;
   }
-#endif
 
   // TODO : implement run tasks (receive from serial, run timer, etc.)
 }
