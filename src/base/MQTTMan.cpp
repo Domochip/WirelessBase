@@ -1,5 +1,41 @@
 #include "MQTTMan.h"
 
+bool MQTTMan::connect(bool firstConnection)
+{
+    char sn[9];
+#ifdef ESP8266
+    sprintf_P(sn, PSTR("%08x"), ESP.getChipId());
+#else
+    sprintf_P(sn, PSTR("%08x"), (uint32_t)(ESP.getEfuseMac() << 40 >> 40));
+#endif
+
+    // generate clientID
+    String clientID(F(APPLICATION1_NAME));
+    clientID += sn;
+
+    // Connect
+    char *username = (_username[0] ? _username : nullptr);
+    char *password = (_username[0] ? _password : nullptr);
+    char willTopic[80] = {0};
+    if (_baseTopic[0] && _connectedAndWillSubTopic[0])
+        sprintf_P(willTopic, PSTR("%s%s"), _baseTopic, _connectedAndWillSubTopic);
+
+    const char *willMessage = (_baseTopic[0] && _connectedAndWillSubTopic[0] ? "0" : nullptr);
+    PubSubClient::connect(clientID.c_str(), username, password, (willTopic[0] ? willTopic : nullptr), 0, true, willMessage, true);
+
+    if (connected())
+    {
+        if (willTopic[0])
+            publish(willTopic, "1", true);
+
+        // Subscribe to needed topic
+        if (_connectedCallBack)
+            _connectedCallBack(this, firstConnection);
+    }
+
+    return connected();
+}
+
 void MQTTMan::prepareTopic(String &topic)
 {
     if (topic.indexOf(F("$sn$")) != -1)
@@ -24,45 +60,26 @@ void MQTTMan::prepareTopic(String &topic)
         topic += '/';
 }
 
-bool MQTTMan::connect(bool firstConnection)
+MQTTMan &MQTTMan::setBaseTopic(const char *baseTopic)
 {
-    char sn[9];
-#ifdef ESP8266
-    sprintf_P(sn, PSTR("%08x"), ESP.getChipId());
-#else
-    sprintf_P(sn, PSTR("%08x"), (uint32_t)(ESP.getEfuseMac() << 40 >> 40));
-#endif
-
-    // generate clientID
-    String clientID(F(APPLICATION1_NAME));
-    clientID += sn;
-
-    // Connect
-    char *username = (_username[0] ? _username : nullptr);
-    char *password = (_username[0] ? _password : nullptr);
-    char *willTopic = (_connectedAndWillTopic[0] ? _connectedAndWillTopic : nullptr);
-    const char *willMessage = (_connectedAndWillTopic[0] ? "0" : nullptr);
-    PubSubClient::connect(clientID.c_str(), username, password, willTopic, 0, true, willMessage);
-
-    if (connected())
+    if (!baseTopic)
+        _baseTopic[0] = 0;
+    else
     {
-        if (_connectedAndWillTopic[0])
-            publish(_connectedAndWillTopic, "1", true);
-
-        // Subscribe to needed topic
-        if (_connectedCallBack)
-            _connectedCallBack(this, firstConnection);
+        String topic(baseTopic);
+        prepareTopic(topic);
+        strlcpy(_baseTopic, topic.c_str(), sizeof(_baseTopic));
     }
 
-    return connected();
+    return *this;
 }
 
-MQTTMan &MQTTMan::setConnectedAndWillTopic(const char *topic)
+MQTTMan &MQTTMan::setConnectedAndWillSubTopic(const char *subTopic)
 {
-    if (!topic)
-        _connectedAndWillTopic[0] = 0;
-    else if (strlen(topic) < sizeof(_connectedAndWillTopic))
-        strcpy(_connectedAndWillTopic, topic);
+    if (!subTopic)
+        _connectedAndWillSubTopic[0] = 0;
+    else
+        strlcpy(_connectedAndWillSubTopic, subTopic, sizeof(_connectedAndWillSubTopic));
 
     return *this;
 }
@@ -88,12 +105,12 @@ bool MQTTMan::connect(const char *username, const char *password)
         return false;
 
     if (username)
-        strcpy(_username, username);
+        strlcpy(_username, username, sizeof(_username));
     else
         _username[0] = 0;
 
     if (password)
-        strcpy(_password, password);
+        strlcpy(_password, password, sizeof(_password));
     else
         _password[0] = 0;
 
@@ -103,8 +120,13 @@ bool MQTTMan::connect(const char *username, const char *password)
 void MQTTMan::disconnect()
 {
     // publish disconnected just before disconnect...
-    if (_connectedAndWillTopic[0])
-        publish(_connectedAndWillTopic, "0", true);
+    if (_baseTopic[0] && _connectedAndWillSubTopic[0])
+    {
+        String topic(_baseTopic);
+        topic += _connectedAndWillSubTopic;
+
+        publish(topic.c_str(), "0", true);
+    }
 
     // Stop MQTT Reconnect
     _mqttReconnectTicker.detach();
@@ -116,13 +138,6 @@ void MQTTMan::disconnect()
         if (_disconnectedCallBack)
             _disconnectedCallBack();
     }
-}
-
-bool MQTTMan::publishToConnectedTopic(const char *payload)
-{
-    if (_connectedAndWillTopic[0])
-        return publish(_connectedAndWillTopic, payload, true);
-    return false;
 }
 
 bool MQTTMan::loop()
@@ -169,4 +184,16 @@ bool MQTTMan::loop()
         return PubSubClient::loop();
     }
     return true;
+}
+
+bool MQTTMan::publishToConnectedTopic(const char *payload)
+{
+    if (_baseTopic[0] && _connectedAndWillSubTopic[0])
+    {
+        String topic(_baseTopic);
+        topic += _connectedAndWillSubTopic;
+
+        return publish(topic.c_str(), payload, true);
+    }
+    return false;
 }
