@@ -3,6 +3,7 @@
 
 #include "Main.h"
 #include "base/MQTTMan.h"
+#include "base/EventSourceMan.h"
 #include "base/Application.h"
 
 const char appDataPredefPassword[] PROGMEM = "ewcXoCt4HHjZUvY1";
