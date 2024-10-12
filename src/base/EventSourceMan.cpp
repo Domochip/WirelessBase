@@ -2,13 +2,13 @@
 
 void EventSourceMan::initEventSourceServer(char appId, WebServer &server)
 {
-#if ENABLE_STATUS_EVTSRC
+#if ENABLE_EVTSRC
     String url(F("/statusEvt"));
     url += appId;
     // register EventSource Uri
     server.on(url, HTTP_GET, [this, &server]()
               { eventSourceHandler(server); });
-#if ENABLE_STATUS_EVTSRC_KEEPALIVE
+#if ENABLE_EVTSRC_KEEPALIVE
     // send keep alive event every 60 seconds
 #ifdef ESP8266
     _eventSourceKeepAliveTicker.attach(60, [this]()
@@ -21,7 +21,7 @@ void EventSourceMan::initEventSourceServer(char appId, WebServer &server)
 #endif
 }
 
-#if ENABLE_STATUS_EVTSRC
+#if ENABLE_EVTSRC
 
 void EventSourceMan::eventSourceHandler(WebServer &server)
 {
@@ -78,7 +78,7 @@ void EventSourceMan::eventSourceBroadcast(const String &message, const String &e
     }
 }
 
-#if ENABLE_STATUS_EVTSRC_KEEPALIVE
+#if ENABLE_EVTSRC_KEEPALIVE
 void EventSourceMan::eventSourceKeepAlive()
 {
     for (uint8_t i = 0; i < STATUS_EVTSRC_MAX_CLIENTS; i++)
@@ -93,6 +93,6 @@ void EventSourceMan::eventSourceKeepAlive()
         }
     }
 }
-#endif // ENABLE_STATUS_EVTSRC_KEEPALIVE
+#endif // ENABLE_EVTSRC_KEEPALIVE
 
-#endif // ENABLE_STATUS_EVTSRC
+#endif // ENABLE_EVTSRC
