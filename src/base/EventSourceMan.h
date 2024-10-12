@@ -18,20 +18,25 @@ class EventSourceMan
 private:
 #if EVTSRC_ENABLED
     WiFiClient _EventSourceClientList[EVTSRC_MAX_CLIENTS];
+
+    void eventSourceHandler(WebServer &server);
+    
 #if EVTSRC_KEEPALIVE_ENABLED
     bool _needEventSourceKeepAlive = false;
     Ticker _eventSourceKeepAliveTicker;
+
+    void eventSourceKeepAlive();
 #endif
 #endif
 
 public:
-    void initEventSourceServer(char appId, WebServer &server);
-
 #if EVTSRC_ENABLED
-    void eventSourceHandler(WebServer &server);
+    void initEventSourceServer(char appId, WebServer &server);
     void eventSourceBroadcast(const String &message, const String &eventType = "message");
+
 #if EVTSRC_KEEPALIVE_ENABLED
-    void eventSourceKeepAlive();
+
+    void run();
 #endif
 #endif
 };

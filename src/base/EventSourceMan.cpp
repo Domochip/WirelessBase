@@ -1,26 +1,5 @@
 #include "EventSourceMan.h"
 
-void EventSourceMan::initEventSourceServer(char appId, WebServer &server)
-{
-#if EVTSRC_ENABLED
-    String url(F("/statusEvt"));
-    url += appId;
-    // register EventSource Uri
-    server.on(url, HTTP_GET, [this, &server]()
-              { eventSourceHandler(server); });
-#if EVTSRC_KEEPALIVE_ENABLED
-    // send keep alive event every 60 seconds
-#ifdef ESP8266
-    _eventSourceKeepAliveTicker.attach(60, [this]()
-                                       { _needEventSourceKeepAlive = true; });
-#else
-    _eventSourceKeepAliveTicker.attach<typeof this>(60, [](typeof this application)
-                                                    { application->_needEventSourceKeepAlive = true; }, this);
-#endif
-#endif
-#endif
-}
-
 #if EVTSRC_ENABLED
 
 void EventSourceMan::eventSourceHandler(WebServer &server)
@@ -63,6 +42,42 @@ void EventSourceMan::eventSourceHandler(WebServer &server)
 #endif
 }
 
+#if EVTSRC_KEEPALIVE_ENABLED
+void EventSourceMan::eventSourceKeepAlive()
+{
+    for (uint8_t i = 0; i < EVTSRC_MAX_CLIENTS; i++)
+    {
+        if (_EventSourceClientList[i])
+        {
+            _EventSourceClientList[i].println(F(":keepalive\n\n"));
+
+#if DEVELOPPER_MODE && defined(LOG_SERIAL)
+            LOG_SERIAL.printf_P(PSTR("statusEventSourceKeepAlive - keep-alive sent to client #%d (%s:%d)\n"), i, _EventSourceClientList[i].remoteIP().toString().c_str(), _EventSourceClientList[i].remotePort());
+#endif
+        }
+    }
+}
+#endif
+
+void EventSourceMan::initEventSourceServer(char appId, WebServer &server)
+{
+    String url(F("/statusEvt"));
+    url += appId;
+    // register EventSource Uri
+    server.on(url, HTTP_GET, [this, &server]()
+              { eventSourceHandler(server); });
+#if EVTSRC_KEEPALIVE_ENABLED
+    // send keep alive event every 60 seconds
+#ifdef ESP8266
+    _eventSourceKeepAliveTicker.attach(60, [this]()
+                                       { _needEventSourceKeepAlive = true; });
+#else
+    _eventSourceKeepAliveTicker.attach<typeof this>(60, [](typeof this eventSourceMan)
+                                                    { eventSourceMan->_needEventSourceKeepAlive = true; }, this);
+#endif
+#endif
+}
+
 void EventSourceMan::eventSourceBroadcast(const String &message, const String &eventType) // default eventType is "message"
 {
     for (uint8_t i = 0; i < EVTSRC_MAX_CLIENTS; i++)
@@ -79,18 +94,12 @@ void EventSourceMan::eventSourceBroadcast(const String &message, const String &e
 }
 
 #if EVTSRC_KEEPALIVE_ENABLED
-void EventSourceMan::eventSourceKeepAlive()
+void EventSourceMan::run()
 {
-    for (uint8_t i = 0; i < EVTSRC_MAX_CLIENTS; i++)
+    if (_needEventSourceKeepAlive)
     {
-        if (_EventSourceClientList[i])
-        {
-            _EventSourceClientList[i].println(F(":keepalive\n\n"));
-
-#if DEVELOPPER_MODE && defined(LOG_SERIAL)
-            LOG_SERIAL.printf_P(PSTR("statusEventSourceKeepAlive - keep-alive sent to client #%d (%s:%d)\n"), i, _EventSourceClientList[i].remoteIP().toString().c_str(), _EventSourceClientList[i].remotePort());
-#endif
-        }
+        _needEventSourceKeepAlive = false;
+        eventSourceKeepAlive();
     }
 }
 #endif // EVTSRC_KEEPALIVE_ENABLED
