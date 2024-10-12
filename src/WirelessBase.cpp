@@ -139,6 +139,8 @@ void MyApplication::appRun()
     lastEvtSrcSentMillis = currentMillis;
   }
 
+  _eventSourceMan.run();
+
   // TODO : implement run tasks (receive from serial, run timer, etc.)
 }
 
