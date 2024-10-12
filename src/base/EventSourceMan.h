@@ -16,9 +16,9 @@ using WebServer = ESP8266WebServer;
 class EventSourceMan
 {
 private:
-#if ENABLE_EVTSRC
-    WiFiClient _EventSourceClientList[STATUS_EVTSRC_MAX_CLIENTS];
-#if ENABLE_EVTSRC_KEEPALIVE
+#if EVTSRC_ENABLED
+    WiFiClient _EventSourceClientList[EVTSRC_MAX_CLIENTS];
+#if EVTSRC_KEEPALIVE_ENABLED
     bool _needEventSourceKeepAlive = false;
     Ticker _eventSourceKeepAliveTicker;
 #endif
@@ -27,10 +27,10 @@ private:
 public:
     void initEventSourceServer(char appId, WebServer &server);
 
-#if ENABLE_EVTSRC
+#if EVTSRC_ENABLED
     void eventSourceHandler(WebServer &server);
     void eventSourceBroadcast(const String &message, const String &eventType = "message");
-#if ENABLE_EVTSRC_KEEPALIVE
+#if EVTSRC_KEEPALIVE_ENABLED
     void eventSourceKeepAlive();
 #endif
 #endif

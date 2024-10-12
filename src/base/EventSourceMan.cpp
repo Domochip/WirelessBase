@@ -2,13 +2,13 @@
 
 void EventSourceMan::initEventSourceServer(char appId, WebServer &server)
 {
-#if ENABLE_EVTSRC
+#if EVTSRC_ENABLED
     String url(F("/statusEvt"));
     url += appId;
     // register EventSource Uri
     server.on(url, HTTP_GET, [this, &server]()
               { eventSourceHandler(server); });
-#if ENABLE_EVTSRC_KEEPALIVE
+#if EVTSRC_KEEPALIVE_ENABLED
     // send keep alive event every 60 seconds
 #ifdef ESP8266
     _eventSourceKeepAliveTicker.attach(60, [this]()
@@ -21,29 +21,29 @@ void EventSourceMan::initEventSourceServer(char appId, WebServer &server)
 #endif
 }
 
-#if ENABLE_EVTSRC
+#if EVTSRC_ENABLED
 
 void EventSourceMan::eventSourceHandler(WebServer &server)
 {
     uint8_t subPos = 0;
 
     // Find the subscription for this client
-    while (subPos < STATUS_EVTSRC_MAX_CLIENTS &&
+    while (subPos < EVTSRC_MAX_CLIENTS &&
            (!_EventSourceClientList[subPos] ||
             _EventSourceClientList[subPos].remoteIP() != server.client().remoteIP() ||
             _EventSourceClientList[subPos].remotePort() != server.client().remotePort()))
         subPos++;
 
     // If no subscription found
-    if (subPos == STATUS_EVTSRC_MAX_CLIENTS)
+    if (subPos == EVTSRC_MAX_CLIENTS)
     {
         subPos = 0;
         // Find a free slot
-        while (subPos < STATUS_EVTSRC_MAX_CLIENTS && _EventSourceClientList[subPos])
+        while (subPos < EVTSRC_MAX_CLIENTS && _EventSourceClientList[subPos])
             subPos++;
 
         // If there is no more slot available
-        if (subPos == STATUS_EVTSRC_MAX_CLIENTS)
+        if (subPos == EVTSRC_MAX_CLIENTS)
             return server.send(500);
     }
 
@@ -65,7 +65,7 @@ void EventSourceMan::eventSourceHandler(WebServer &server)
 
 void EventSourceMan::eventSourceBroadcast(const String &message, const String &eventType) // default eventType is "message"
 {
-    for (uint8_t i = 0; i < STATUS_EVTSRC_MAX_CLIENTS; i++)
+    for (uint8_t i = 0; i < EVTSRC_MAX_CLIENTS; i++)
     {
         if (_EventSourceClientList[i])
         {
@@ -78,10 +78,10 @@ void EventSourceMan::eventSourceBroadcast(const String &message, const String &e
     }
 }
 
-#if ENABLE_EVTSRC_KEEPALIVE
+#if EVTSRC_KEEPALIVE_ENABLED
 void EventSourceMan::eventSourceKeepAlive()
 {
-    for (uint8_t i = 0; i < STATUS_EVTSRC_MAX_CLIENTS; i++)
+    for (uint8_t i = 0; i < EVTSRC_MAX_CLIENTS; i++)
     {
         if (_EventSourceClientList[i])
         {
@@ -93,6 +93,6 @@ void EventSourceMan::eventSourceKeepAlive()
         }
     }
 }
-#endif // ENABLE_EVTSRC_KEEPALIVE
+#endif // EVTSRC_KEEPALIVE_ENABLED
 
-#endif // ENABLE_EVTSRC
+#endif // EVTSRC_ENABLED
