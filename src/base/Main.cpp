@@ -19,18 +19,21 @@ using WebServer = ESP8266WebServer;
 // include Application header file
 #include APPLICATION1_HEADER
 
-// System
-Core core('0', "Core");
-
-// WifiMan
-WifiMan wifiMan('w', "WiFi");
-
 // WebServer
 WebServer server(80);
 // flag to pause application Run during Firmware Update
 bool pauseApplication = false;
 // variable used by objects to indicate system reboot is required
 bool shouldReboot = false;
+
+// Application pointers array declaration
+Application *applicationList[3];
+
+// System
+Core core('0', "Core");
+
+// WifiMan
+WifiMan wifiMan('w', "WiFi");
 
 // Application1 object
 APPLICATION1_CLASS application1('1', APPLICATION1_NAME);
@@ -110,6 +113,11 @@ void setup()
     LOG_SERIAL.println(F("/!\\ Configuration can't be saved /!\\"));
 #endif
   }
+
+  // Init Application List
+  applicationList[0] = &core;
+  applicationList[1] = &wifiMan;
+  applicationList[2] = &application1;
 
   // Init Core
   core.init(skipExistingConfig);
