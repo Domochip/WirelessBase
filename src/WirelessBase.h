@@ -25,7 +25,6 @@ private:
   void setConfigDefaultValues();
   bool parseConfigJSON(JsonDocument &doc, bool fromWebPage);
   String generateConfigJSON(bool forSaveFile);
-  String generateStatusJSON();
   bool appInit(bool reInit);
   const PROGMEM char *getHTMLContent(WebPageForPlaceHolder wp);
   size_t getHTMLContentSize(WebPageForPlaceHolder wp);
@@ -33,7 +32,9 @@ private:
   void appRun();
 
 public:
-  MyApplication(char appId, String fileName, Application **applicationList);
+  MyApplication(char appId, String fileName);
+
+  String generateStatusJSON();
 };
 
 #endif

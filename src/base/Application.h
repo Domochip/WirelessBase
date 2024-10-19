@@ -19,20 +19,21 @@ class Application
 protected:
   typedef enum
   {
-    status,
-    config
-  } WebPageForPlaceHolder;
-
-  typedef enum
-  {
     Core,
     WifiMan,
     Application1
   } Applications;
 
+  static Application *_applicationList[3]; // static list of all applications
+
+  typedef enum
+  {
+    status,
+    config
+  } WebPageForPlaceHolder;
+
   char _appId;
   String _appName;
-  Application **_applicationList;
   bool _reInit = false;
 
   // already built methods
@@ -43,7 +44,6 @@ protected:
   virtual void setConfigDefaultValues() = 0;
   virtual bool parseConfigJSON(JsonDocument &doc, bool fromWebPage = false) = 0;
   virtual String generateConfigJSON(bool forSaveFile = false) = 0;
-  virtual String generateStatusJSON() = 0;
   virtual bool appInit(bool reInit = false) = 0;
   virtual const PROGMEM char *getHTMLContent(WebPageForPlaceHolder wp) = 0;
   virtual size_t getHTMLContentSize(WebPageForPlaceHolder wp) = 0;
@@ -52,7 +52,9 @@ protected:
 
 public:
   // already built methods
-  Application(char appId, String appName, Application **applicationList) : _appId(appId), _appName(appName), _applicationList(applicationList) {}
+  Application(char appId, String appName) : _appId(appId), _appName(appName) {}
+
+  virtual String generateStatusJSON() = 0;
 
   void init(bool skipExistingConfig);
   void initWebServer(WebServer &server, bool &shouldReboot, bool &pauseApplication);
