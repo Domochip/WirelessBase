@@ -54,6 +54,11 @@ bool Application::loadConfig()
   return result;
 }
 
+String Application::getStatusJSON()
+{
+  return generateStatusJSON();
+}
+
 void Application::init(bool skipExistingConfig)
 {
   bool result = true;

@@ -18,6 +18,7 @@ private:
   void setConfigDefaultValues();
   bool parseConfigJSON(JsonDocument &doc, bool fromWebPage);
   String generateConfigJSON(bool clearPassword);
+  String generateStatusJSON();
   bool appInit(bool reInit);
   const PROGMEM char *getHTMLContent(WebPageForPlaceHolder wp);
   size_t getHTMLContentSize(WebPageForPlaceHolder wp);
@@ -26,8 +27,6 @@ private:
 
 public:
   Core(char appId, String appName) : Application(appId, appName) { _applicationList[Application::Applications::Core] = this; }
-
-  String generateStatusJSON();
 };
 
 #endif

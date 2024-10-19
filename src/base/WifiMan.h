@@ -50,6 +50,7 @@ private:
   void setConfigDefaultValues();
   bool parseConfigJSON(JsonDocument &doc, bool fromWebPage);
   String generateConfigJSON(bool forSaveFile);
+  String generateStatusJSON();
   bool appInit(bool reInit);
   const PROGMEM char *getHTMLContent(WebPageForPlaceHolder wp);
   size_t getHTMLContentSize(WebPageForPlaceHolder wp);
@@ -58,8 +59,6 @@ private:
 
 public:
   WifiMan(char appId, String appName) : Application(appId, appName) { _applicationList[Application::Applications::WifiMan] = this; }
-
-  String generateStatusJSON();
 };
 
 #endif

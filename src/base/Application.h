@@ -44,6 +44,7 @@ protected:
   virtual void setConfigDefaultValues() = 0;
   virtual bool parseConfigJSON(JsonDocument &doc, bool fromWebPage = false) = 0;
   virtual String generateConfigJSON(bool forSaveFile = false) = 0;
+  virtual String generateStatusJSON() = 0;
   virtual bool appInit(bool reInit = false) = 0;
   virtual const PROGMEM char *getHTMLContent(WebPageForPlaceHolder wp) = 0;
   virtual size_t getHTMLContentSize(WebPageForPlaceHolder wp) = 0;
@@ -54,8 +55,7 @@ public:
   // already built methods
   Application(char appId, String appName) : _appId(appId), _appName(appName) {}
 
-  virtual String generateStatusJSON() = 0;
-
+  String getStatusJSON();
   void init(bool skipExistingConfig);
   void initWebServer(WebServer &server, bool &shouldReboot, bool &pauseApplication);
   void run();
