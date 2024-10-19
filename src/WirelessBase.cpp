@@ -134,7 +134,7 @@ void MyApplication::appRun()
   unsigned long currentMillis = millis();
 
   if (currentMillis - lastEvtSrcSentMillis >= 10000)
-  {                                                         // Check if it's time to send a new event
+  {                                                                   // Check if it's time to send a new event
     _eventSourceMan.eventSourceBroadcast(F("{\"Hello\":\"World\"}")); // Send a message to all connected clients
     lastEvtSrcSentMillis = currentMillis;
   }
@@ -146,7 +146,7 @@ void MyApplication::appRun()
 
 //------------------------------------------
 // Constructor
-MyApplication::MyApplication(char appId, String appName) : Application(appId, appName)
+MyApplication::MyApplication(char appId, String appName, Application **applicationList) : Application(appId, appName, applicationList)
 {
   // TODO : Initialize special structure or libraries in constructor
   // Note : most of the time, init is done during AppInit based on configuration

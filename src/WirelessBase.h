@@ -33,7 +33,7 @@ private:
   void appRun();
 
 public:
-  MyApplication(char appId, String fileName);
+  MyApplication(char appId, String fileName, Application **applicationList);
 };
 
 #endif

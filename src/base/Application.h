@@ -23,8 +23,16 @@ protected:
     config
   } WebPageForPlaceHolder;
 
+  typedef enum
+  {
+    Core,
+    WifiMan,
+    Application1
+  } Applications;
+
   char _appId;
   String _appName;
+  Application **_applicationList;
   bool _reInit = false;
 
   // already built methods
@@ -44,11 +52,8 @@ protected:
 
 public:
   // already built methods
-  Application(char appId, String appName)
-  {
-    _appId = appId;
-    _appName = appName;
-  }
+  Application(char appId, String appName, Application **applicationList) : _appId(appId), _appName(appName), _applicationList(applicationList) {}
+
   void init(bool skipExistingConfig);
   void initWebServer(WebServer &server, bool &shouldReboot, bool &pauseApplication);
   void run();

@@ -30,13 +30,13 @@ bool shouldReboot = false;
 Application *applicationList[3];
 
 // System
-Core core('0', "Core");
+Core core('0', "Core", (Application **)&applicationList);
 
 // WifiMan
-WifiMan wifiMan('w', "WiFi");
+WifiMan wifiMan('w', "WiFi", (Application **)&applicationList);
 
 // Application1 object
-APPLICATION1_CLASS application1('1', APPLICATION1_NAME);
+APPLICATION1_CLASS application1('1', APPLICATION1_NAME, (Application **)&applicationList);
 
 //-----------------------------------------------------------------------
 // Setup function

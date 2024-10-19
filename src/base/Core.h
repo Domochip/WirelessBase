@@ -26,7 +26,7 @@ private:
   void appRun(){};
 
 public:
-  Core(char appId, String fileName) : Application(appId, fileName) {}
+  Core(char appId, String appName, Application **applicationList) : Application(appId, appName, applicationList) {}
 };
 
 #endif
