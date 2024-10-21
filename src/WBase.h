@@ -1,5 +1,5 @@
-#ifndef WirelessBase_h
-#define WirelessBase_h
+#ifndef WBase_h
+#define WBase_h
 
 #include "Main.h"
 #include "base/MQTTMan.h"

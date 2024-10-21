@@ -1,4 +1,4 @@
-#include "WirelessBase.h"
+#include "WBase.h"
 
 //------------------------------------------
 // Used to initialize configuration properties to default values

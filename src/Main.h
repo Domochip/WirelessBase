@@ -7,7 +7,7 @@
 // Configuration Web Pages :
 // http://IP/
 
-#define APPLICATION1_HEADER "WirelessBase.h"
+#define APPLICATION1_HEADER "WBase.h"
 #define APPLICATION1_NAME "WBase"
 #define APPLICATION1_DESC "DomoChip Wireless Base"
 #define APPLICATION1_CLASS WBase
