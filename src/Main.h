@@ -10,7 +10,7 @@
 #define APPLICATION1_HEADER "WirelessBase.h"
 #define APPLICATION1_NAME "WBase"
 #define APPLICATION1_DESC "DomoChip Wireless Base"
-#define APPLICATION1_CLASS MyApplication
+#define APPLICATION1_CLASS WBase
 
 #define VERSION_NUMBER "3.0.0"
 

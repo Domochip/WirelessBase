@@ -2,7 +2,7 @@
 
 //------------------------------------------
 // Used to initialize configuration properties to default values
-void MyApplication::setConfigDefaultValues()
+void WBase::setConfigDefaultValues()
 {
   // TODO
   // property1 = 0;
@@ -11,7 +11,7 @@ void MyApplication::setConfigDefaultValues()
 
 //------------------------------------------
 // Parse JSON object into configuration properties
-bool MyApplication::parseConfigJSON(JsonDocument &doc, bool fromWebPage = false)
+bool WBase::parseConfigJSON(JsonDocument &doc, bool fromWebPage = false)
 {
   // Be carefull about the type of the properties
   // when Json is coming from web page (fromWebPage = true), all properties are string
@@ -36,7 +36,7 @@ bool MyApplication::parseConfigJSON(JsonDocument &doc, bool fromWebPage = false)
 
 //------------------------------------------
 // Generate JSON from configuration properties
-String MyApplication::generateConfigJSON(bool forSaveFile = false)
+String WBase::generateConfigJSON(bool forSaveFile = false)
 {
   JsonDocument doc;
 
@@ -52,7 +52,7 @@ String MyApplication::generateConfigJSON(bool forSaveFile = false)
 
 //------------------------------------------
 // Generate JSON of application status
-String MyApplication::generateStatusJSON()
+String WBase::generateStatusJSON()
 {
   JsonDocument doc;
 
@@ -68,7 +68,7 @@ String MyApplication::generateStatusJSON()
 
 //------------------------------------------
 // code to execute during initialization and reinitialization of the app
-bool MyApplication::appInit(bool reInit)
+bool WBase::appInit(bool reInit)
 {
   // TODO
   // if (toto.enabled) _sendTimer.setInterval(SEND_PERIOD, [this]() {this->SendTimerTick();});
@@ -78,7 +78,7 @@ bool MyApplication::appInit(bool reInit)
 
 //------------------------------------------
 // Return HTML Code to insert into Status Web page
-const PROGMEM char *MyApplication::getHTMLContent(WebPageForPlaceHolder wp)
+const PROGMEM char *WBase::getHTMLContent(WebPageForPlaceHolder wp)
 {
   switch (wp)
   {
@@ -96,7 +96,7 @@ const PROGMEM char *MyApplication::getHTMLContent(WebPageForPlaceHolder wp)
 }
 
 // and his Size
-size_t MyApplication::getHTMLContentSize(WebPageForPlaceHolder wp)
+size_t WBase::getHTMLContentSize(WebPageForPlaceHolder wp)
 {
   switch (wp)
   {
@@ -115,7 +115,7 @@ size_t MyApplication::getHTMLContentSize(WebPageForPlaceHolder wp)
 
 //------------------------------------------
 // code to register web request answer to the web server
-void MyApplication::appInitWebServer(WebServer &server, bool &shouldReboot, bool &pauseApplication)
+void WBase::appInitWebServer(WebServer &server, bool &shouldReboot, bool &pauseApplication)
 {
   // TODO
   // server.on("/getColor", HTTP_GET, [this, &server]() {server.send(200, F("text/html"), GetColor());});
@@ -126,7 +126,7 @@ void MyApplication::appInitWebServer(WebServer &server, bool &shouldReboot, bool
 
 //------------------------------------------
 // Run for timer
-void MyApplication::appRun()
+void WBase::appRun()
 {
   // last time status event source was sent
   static unsigned long lastEvtSrcSentMillis;
@@ -146,7 +146,7 @@ void MyApplication::appRun()
 
 //------------------------------------------
 // Constructor
-MyApplication::MyApplication(char appId, String appName) : Application(appId, appName)
+WBase::WBase(char appId, String appName) : Application(appId, appName)
 {
   _applicationList[Application::Applications::Application1] = this;
 
