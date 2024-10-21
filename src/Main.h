@@ -8,7 +8,8 @@
 #define TOSTRING(x) STRINGIFY(x)
 
 // ----- Should be modified for your application -----
-#define APPLICATION1_DESC "DomoChip Wireless Base"
+#define APPLICATION1_MANUFACTURER "Domochip"
+#define APPLICATION1_MODEL "WBase"
 #define APPLICATION1_CLASS WBase
 #define VERSION_NUMBER "3.0.0"
 
